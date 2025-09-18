@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Propiedad - FM Inmobiliaria</title>
+    <meta name="description" content="Detalles completos de la propiedad.">
+    <!-- Meta tags y favicon, puedes copiar las de tu index.html o propiedades-colombia.html -->
+    <link rel="icon" href="https://fminmobiliaria.com.co/wp-content/uploads/2023/05/LOGO-FINAL-FM_Mesa-de-trabajo-1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+
+    <style>
+        :root {
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --gold: #C4A66A;
+            --border-color: #e5e5e5;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        /* === Reset & Base === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+
+        /* === Navbar (Estilo Oscuro) === */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 3rem;
+            z-index: 1000; display: flex; justify-content: space-between; align-items: center;
+            background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
+        }
+        .logo img { height: 50px; }
+        .menu-button { font-size: 1rem; font-weight: 500; text-decoration: none; color: var(--dark); cursor: pointer; z-index: 1001; }
+        .menu-button.menu-open { color: var(--light); }
+
+        .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--dark); z-index: 999; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; }
+        .fullscreen-menu-nav { text-align: center; }
+        .fullscreen-menu-nav ul { list-style: none; }
+        .fullscreen-menu-nav li { margin: 1rem 0; overflow: hidden; }
+        .fullscreen-menu-link { font-size: clamp(2.5rem, 6vw, 5rem); color: var(--light); text-decoration: none; font-weight: 700; display: inline-block; transform: translateY(100%); }
+
+        .footer { padding: 3rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); margin-top: 5rem;}
+        .social-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .social-links a { color: var(--dark); text-decoration: none; transition: color 0.3s ease; }
+        .social-links a:hover { color: var(--gold); }
+
+        /* === Propiedad Detalle === */
+        .property-detail-page {
+            padding-top: 100px; /* Espacio para el navbar */
+            padding-bottom: 5rem;
+        }
+        .loading-property, .error-property {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #888;
+            padding: 5rem;
+        }
+
+        /* Swiper Gallery */
+        .swiper-container {
+            width: 100%;
+            height: 500px; /* Altura del slider principal */
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3rem;
+        }
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--gold);
+        }
+
+        /* Thumbnails Swiper */
+        .swiper-container-thumbs {
+            height: 100px;
+            margin-top: 1rem;
+        }
+        .swiper-slide-thumb-active {
+            opacity: 1;
+            border: 2px solid var(--gold);
+            border-radius: 8px; /* Redondea los bordes de los thumbnails activos */
+        }
+        .swiper-slide-thumb {
+            opacity: 0.7;
+            border-radius: 8px; /* Redondea los bordes de todos los thumbnails */
+            transition: opacity 0.3s ease, border 0.3s ease;
+            cursor: pointer;
+        }
+
+        .property-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .property-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            margin: 0;
+            flex-grow: 1;
+        }
+        .property-price {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+
+        .property-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            color: #555;
+            font-weight: 500;
+        }
+        .meta-item .iconify {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+
+        .property-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+            color: #444;
+        }
+
+        .property-features h2, .property-location-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .feature-item {
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .feature-item .iconify {
+            font-size: 1.8rem;
+            color: var(--gold);
+        }
+
+        .contact-owner-btn {
+            background-color: var(--gold);
+            color: var(--dark);
+            padding: 1rem 2.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: var(--font-main);
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+        }
+        .contact-owner-btn:hover {
+            background-color: var(--dark);
+            color: var(--light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 1.5rem; }
+            .property-header { flex-direction: column; align-items: flex-start; }
+            .property-price { margin-top: 1rem; }
+            .property-meta { flex-direction: column; gap: 0.8rem; }
+            .swiper-container { height: 300px; }
+            .swiper-container-thumbs { display: none; /* Oculta los thumbnails en móviles si no hay espacio */ }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="https://fminmobiliaria.com.co/wp-content/uploads/2023/05/LOGO-FINAL-FM_Mesa-de-trabajo-1.png" alt="Logo FM Inmobiliaria">
+        </a>
+        <a href="#" class="menu-button">Menú</a>
+    </nav>
+
+    <div class="fullscreen-menu">
+        <nav class="fullscreen-menu-nav">
+            <ul>
+                <li><a href="index.html#services" class="fullscreen-menu-link">Servicios</a></li>
+                <li><a href="index.html#markets" class="fullscreen-menu-link">Mercados</a></li>
+                <li><a href="index.html#gallery" class="fullscreen-menu-link">Proyectos</a></li>
+                <li><a href="index.html#contact" class="fullscreen-menu-link">Contacto</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main class="property-detail-page">
+        <div class="container">
+            <div class="loading-property">Cargando detalles de la propiedad...</div>
+            <div class="error-property" style="display: none;"></div>
+
+            <div id="property-content" style="display: none;">
+                <!-- Swiper -->
+                <div class="swiper-container gallery-top">
+                    <div class="swiper-wrapper" id="property-images">
+                        <!-- Imágenes de la propiedad se cargarán aquí -->
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next swiper-button-white"></div>
+                    <div class="swiper-button-prev swiper-button-white"></div>
+                </div>
+                <div class="swiper-container gallery-thumbs">
+                    <div class="swiper-wrapper" id="property-thumbnails">
+                        <!-- Thumbnails de las imágenes se cargarán aquí -->
+                    </div>
+                </div>
+
+                <div class="property-header">
+                    <h1 id="property-title"></h1>
+                    <p class="property-price" id="property-price"></p>
+                </div>
+
+                <div class="property-meta">
+                    <div class="meta-item"><span class="iconify" data-icon="ph:map-pin"></span> <span id="property-location"></span></div>
+                    <div class="meta-item"><span class="iconify" data-icon="ph:bed-bold"></span> <span id="property-bedrooms"></span> hab.</div>
+                    <div class="meta-item"><span class="iconify" data-icon="ph:bathtub-bold"></span> <span id="property-bathrooms"></span> baños</div>
+                    <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span> m²</div>
+                    <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span> garajes</div>
+                </div>
+
+                <div class="property-description">
+                    <p id="property-description-text"></p>
+                </div>
+
+                <div class="property-features">
+                    <h2>Características Adicionales</h2>
+                    <div class="features-grid" id="property-features-list">
+                        <!-- Características se cargarán aquí -->
+                    </div>
+                </div>
+
+                <div class="property-location-info">
+                    <h2>Información de Ubicación</h2>
+                    <div class="features-grid">
+                        <div class="feature-item"><span class="iconify" data-icon="ph:globe"></span> País: <span id="location-country"></span></div>
+                        <div class="feature-item"><span class="iconify" data-icon="ph:city"></span> Ciudad: <span id="location-city"></span></div>
+                        <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> Zona/Barrio: <span id="location-zone"></span></div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 4rem;">
+                    <a href="mailto:info@fminmobiliaria.com" class="contact-owner-btn">Contactar al Asesor</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="copyright">
+            &copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.
+        </div>
+        <div class="social-links">
+            <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
+            <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
+            <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
+            <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const propertyId = urlParams.get('id');
+
+            const loadingDiv = document.querySelector('.loading-property');
+            const errorDiv = document.querySelector('.error-property');
+            const propertyContent = document.getElementById('property-content');
+
+            // --- Menu Logic (copy from index.html) ---
+            const menuButton = document.querySelector('.menu-button');
+            const fullscreenMenu = document.querySelector('.fullscreen-menu');
+            const menuLinks = document.querySelectorAll('.fullscreen-menu-link');
+            const menuTl = gsap.timeline({ paused: true });
+
+            menuTl.to(fullscreenMenu, {
+                visibility: 'visible',
+                duration: 0.01
+            }).to(fullscreenMenu, {
+                opacity: 1,
+                duration: 0.5,
+                ease: 'power2.inOut'
+            }).to(menuLinks, {
+                y: 0,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: 'power3.out'
+            }, "-=0.3");
+
+            menuButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (menuButton.classList.contains('menu-open')) {
+                    menuButton.textContent = 'Menú';
+                    menuTl.reverse();
+                    document.body.style.overflow = '';
+                } else {
+                    menuButton.textContent = 'Cerrar';
+                    menuTl.play();
+                    document.body.style.overflow = 'hidden';
+                }
+                menuButton.classList.toggle('menu-open');
+            });
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    menuButton.textContent = 'Menú';
+                    menuTl.reverse();
+                    document.body.style.overflow = '';
+                    menuButton.classList.remove('menu-open');
+                    // Opcional: si quieres que el scroll funcione dentro de propiedad.html a secciones específicas
+                    // const target = link.getAttribute('href');
+                    // if (target.startsWith('#')) {
+                    //     document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+                    // } else {
+                    //     window.location.href = target; // Redirigir si no es un ancla
+                    // }
+                });
+            });
+            // --- End Menu Logic ---
+
+            // --- FOOTER YEAR ---
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            if (!propertyId) {
+                loadingDiv.style.display = 'none';
+                errorDiv.textContent = 'Error: ID de propiedad no especificado en la URL.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/getPropertyById?id_property=${propertyId}`);
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener la propiedad.');
+                }
+                const property = await response.json();
+
+                if (!property) {
+                    throw new Error('Propiedad no encontrada.');
+                }
+
+                // Populate content
+                document.title = `${property.title || 'Propiedad sin título'} - FM Inmobiliaria`;
+                document.getElementById('property-title').textContent = property.title || 'Propiedad sin título';
+                document.getElementById('property-price').textContent = property.for_sale === 'true' ? (property.sale_price_label || 'Consultar') : (property.rent_price_label || 'Consultar');
+                document.getElementById('property-location').textContent = `${property.city_label || ''}, ${property.country_label || ''}`.replace(/^, |, $/g, '').trim();
+                document.getElementById('property-bedrooms').textContent = property.bedrooms || '0';
+                document.getElementById('property-bathrooms').textContent = property.bathrooms || '0';
+                document.getElementById('property-area').textContent = property.built_area || '--';
+                document.getElementById('property-garages').textContent = property.garages || '0';
+                document.getElementById('property-description-text').innerHTML = property.description || 'Descripción no disponible.'; // Usar innerHTML si la descripción puede contener HTML
+
+                // Location Info
+                document.getElementById('location-country').textContent = property.country_label || 'N/A';
+                document.getElementById('location-city').textContent = property.city_label || 'N/A';
+                document.getElementById('location-zone').textContent = property.zone_label || 'N/A';
+
+
+                // Images for Swiper
+                const mainImageContainer = document.getElementById('property-images');
+                const thumbnailContainer = document.getElementById('property-thumbnails');
+                if (property.photos && property.photos.length > 0) {
+                    property.photos.forEach(photo => {
+                        mainImageContainer.innerHTML += `<div class="swiper-slide"><img src="${photo.url}" alt="${property.title || 'Propiedad'}"></div>`;
+                        thumbnailContainer.innerHTML += `<div class="swiper-slide swiper-slide-thumb"><img src="${photo.url_small || photo.url}" alt="${property.title || 'Propiedad'} thumbnail"></div>`;
+                    });
+                } else {
+                    // Fallback image if no photos
+                    mainImageContainer.innerHTML += `<div class="swiper-slide"><img src="https://placehold.co/1200x500/f5f5f5/1a1a1a?text=Sin+Imágenes" alt="Sin imágenes"></div>`;
+                    thumbnailContainer.innerHTML += `<div class="swiper-slide swiper-slide-thumb"><img src="https://placehold.co/100x100/f5f5f5/1a1a1a?text=Sin+Imágenes" alt="Sin imágenes thumbnail"></div>`;
+                }
+
+
+                // Features
+                const featuresList = document.getElementById('property-features-list');
+                const features = [
+                    { label: 'Estrato', value: property.stratum_label, icon: 'ph:line-segments' },
+                    { label: 'Tipo de Inmueble', value: property.property_type_label, icon: 'ph:house' },
+                    { label: 'Área Terreno', value: `${property.lot_area || '--'} m²`, icon: 'ph:ruler-square' },
+                    { label: 'Estado', value: property.status_label, icon: 'ph:check-circle' },
+                    { label: 'Antigüedad', value: property.antiquity_label, icon: 'ph:calendar-blank' },
+                    { label: 'Pisos', value: property.floors || '--', icon: 'ph:building-tower' },
+                    { label: 'Estado Propiedad', value: property.property_condition_label || '--', icon: 'ph:wrench' },
+                    { label: 'Año Construcción', value: property.build_year || '--', icon: 'ph:calendar' },
+                    // Puedes añadir más características aquí
+                ];
+
+                features.forEach(feature => {
+                    if (feature.value && feature.value !== '--' && feature.value !== '0 m²' && feature.value !== '0' && feature.value !== 'No especificado') {
+                        featuresList.innerHTML += `
+                            <div class="feature-item">
+                                <span class="iconify" data-icon="${feature.icon}"></span>
+                                <span>${feature.label}: <strong>${feature.value}</strong></span>
+                            </div>
+                        `;
+                    }
+                });
+
+
+                // Initialize Swiper
+                const galleryThumbs = new Swiper('.gallery-thumbs', {
+                    spaceBetween: 10,
+                    slidesPerView: 4,
+                    freeMode: true,
+                    watchSlidesVisibility: true,
+                    watchSlidesProgress: true,
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 5,
+                        },
+                        768: {
+                            slidesPerView: 6,
+                        },
+                        1024: {
+                            slidesPerView: 7,
+                        },
+                    }
+                });
+
+                const galleryTop = new Swiper('.gallery-top', {
+                    spaceBetween: 10,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    thumbs: {
+                        swiper: galleryThumbs
+                    },
+                    loop: true,
+                });
+
+
+                loadingDiv.style.display = 'none';
+                propertyContent.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error al cargar la propiedad:', error);
+                loadingDiv.style.display = 'none';
+                errorDiv.textContent = 'Lo sentimos, no pudimos cargar los detalles de esta propiedad. Por favor, inténtalo de nuevo más tarde.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
