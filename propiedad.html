@@ -21,206 +21,106 @@
             --font-main: 'Inter', sans-serif;
         }
 
-        /* === Reset & Base === */
+        /* === Base Styles (Navbar, Footer, etc. - sin cambios) === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: var(--font-main);
-            background-color: var(--light);
-            color: var(--dark);
-            overflow-x: hidden;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
-
-        /* === Navbar (Estilo Oscuro) === */
-        .navbar {
-            position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 3rem;
-            z-index: 1000; display: flex; justify-content: space-between; align-items: center;
-            background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
-        }
+        body { font-family: var(--font-main); background-color: var(--light); color: var(--dark); overflow-x: hidden; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 3rem; z-index: 1000; display: flex; justify-content: space-between; align-items: center; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
         .logo img { height: 50px; }
         .menu-button { font-size: 1rem; font-weight: 500; text-decoration: none; color: var(--dark); cursor: pointer; z-index: 1001; }
-        .menu-button.menu-open { color: var(--light); }
-
         .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--dark); z-index: 999; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; }
         .fullscreen-menu-nav { text-align: center; }
         .fullscreen-menu-nav ul { list-style: none; }
-        .fullscreen-menu-nav li { margin: 1rem 0; overflow: hidden; }
-        .fullscreen-menu-link { font-size: clamp(2.5rem, 6vw, 5rem); color: var(--light); text-decoration: none; font-weight: 700; display: inline-block; transform: translateY(100%); }
-
+        .fullscreen-menu-nav li { margin: 1rem 0; }
+        .fullscreen-menu-link { font-size: clamp(2.5rem, 6vw, 5rem); color: var(--light); text-decoration: none; font-weight: 700; }
         .footer { padding: 3rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); margin-top: 5rem;}
-        .social-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .social-links { display: flex; gap: 1.5rem; }
         .social-links a { color: var(--dark); text-decoration: none; transition: color 0.3s ease; }
         .social-links a:hover { color: var(--gold); }
 
-        /* === Propiedad Detalle === */
+        /* === CAMBIOS PRINCIPALES PARA EL DISEÑO DE DOS COLUMNAS === */
+
         .property-detail-page {
-            padding-top: 100px;
+            padding-top: 120px;
             padding-bottom: 5rem;
         }
+
+        .property-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* Columna izquierda un poco más grande */
+            gap: 4rem; /* Espacio entre las columnas */
+            align-items: flex-start;
+        }
+
+        .gallery-column {
+            position: sticky; /* Hace que la galería se quede fija al hacer scroll */
+            top: 120px; /* Espacio desde la parte superior */
+        }
+        
+        .info-column {
+            /* Esta columna simplemente contendrá el texto */
+        }
+
         .loading-property, .error-property {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #888;
-            padding: 5rem;
+            text-align: center; font-size: 1.5rem; color: #888; padding: 5rem;
         }
 
         /* Swiper Gallery */
         .swiper-container {
             width: 100%;
-            height: 60vh;
+            height: 500px;
             margin-bottom: 1rem;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .swiper-slide {
-            background-size: cover;
-            background-position: center;
-        }
-        .swiper-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .swiper-button-next, .swiper-button-prev {
-            color: var(--light);
-            --swiper-navigation-size: 30px;
-            background-color: rgba(0,0,0,0.3);
-            padding: 1.5rem;
-            border-radius: 50%;
-        }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .swiper-button-next, .swiper-button-prev { color: var(--light); }
 
-        /* Thumbnails Swiper */
-        .swiper-container-thumbs {
-            height: 100px;
-            margin-bottom: 3rem;
-            padding: 5px 0;
-        }
-        .swiper-slide-thumb {
-            width: 100px;
-            height: 100px;
-            opacity: 0.6;
-            border-radius: 8px;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-            overflow: hidden;
-        }
-        .swiper-slide-thumb-active {
-            opacity: 1;
-            border: 3px solid var(--gold);
-        }
+        .swiper-container-thumbs { height: 90px; }
+        .swiper-slide-thumb { opacity: 0.6; border-radius: 8px; transition: opacity 0.3s ease; cursor: pointer; overflow: hidden; }
+        .swiper-slide-thumb-active { opacity: 1; border: 3px solid var(--gold); }
 
+        /* Estilos de la información (pocos cambios) */
         .property-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .property-header h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            line-height: 1.1;
-            margin: 0;
-            flex-grow: 1;
-        }
-        .property-price {
-            font-size: clamp(1.8rem, 4vw, 3rem);
-            font-weight: 700;
-            color: var(--gold);
-            white-space: nowrap;
-        }
-
-        .property-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.1rem;
-            color: #555;
-            font-weight: 500;
-        }
-        .meta-item .iconify {
-            font-size: 1.5rem;
-            color: var(--dark);
-        }
-
-        .property-description {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 3rem;
-            color: #444;
-        }
-        .property-description p {
-            margin-bottom: 1rem;
-        }
-
-        .property-features h2, .property-location-info h2 {
-            font-size: 2rem;
             margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
             border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
         }
+        .property-header h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
+        .property-price { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--gold); margin-top: 0.5rem; }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-        .feature-item {
-            background-color: #fff;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        .feature-item .iconify {
-            font-size: 1.8rem;
-            color: var(--gold);
-        }
+        .property-meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-bottom: 2rem; }
+        .meta-item { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: #555; }
+        .meta-item .iconify { font-size: 1.4rem; color: var(--dark); }
 
-        .contact-owner-btn {
-            background-color: var(--gold);
-            color: var(--dark);
-            padding: 1rem 2.5rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-family: var(--font-main);
-            font-weight: 500;
-            display: inline-block;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
-        .contact-owner-btn:hover {
-            background-color: var(--dark);
-            color: var(--light);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0, 0.1);
-        }
+        .property-description { font-size: 1.1rem; line-height: 1.7; margin-bottom: 3rem; color: #444; }
+        .property-description p { margin-bottom: 1rem; }
+        .property-description h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+        
+        .property-features h2, .property-location-info h2 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+        .feature-item { background-color: #fff; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; }
+        .feature-item .iconify { font-size: 1.5rem; color: var(--gold); }
+        .feature-item strong { margin-left: 0.5rem; }
 
+        .contact-owner-btn { background-color: var(--gold); color: var(--dark); padding: 1rem 2.5rem; border-radius: 5px; text-decoration: none; font-weight: 500; display: inline-block; transition: all 0.3s ease; border: none; cursor: pointer; font-size: 1.1rem; }
+        .contact-owner-btn:hover { background-color: var(--dark); color: var(--light); transform: translateY(-3px); }
+
+        /* Responsive para tablet y móvil */
+        @media (max-width: 992px) {
+            .property-layout {
+                grid-template-columns: 1fr; /* Apila las columnas en pantallas más pequeñas */
+            }
+            .gallery-column {
+                position: static; /* Desactiva el 'sticky' */
+                top: auto;
+            }
+        }
         @media (max-width: 768px) {
             .container { padding: 0 1.5rem; }
-            .property-header { flex-direction: column; align-items: flex-start; }
-            .property-price { margin-top: 1rem; }
             .swiper-container { height: 300px; }
             .swiper-container-thumbs { display: none; }
         }
-
     </style>
 </head>
 <body>
@@ -235,9 +135,9 @@
     <div class="fullscreen-menu">
         <nav class="fullscreen-menu-nav">
             <ul>
-                 <li><a href="propiedades-colombia.html" class="fullscreen-menu-link">Propiedades</a></li>
-                 <li><a href="index.html#markets" class="fullscreen-menu-link">Mercados</a></li>
-                 <li><a href="index.html#contact" class="fullscreen-menu-link">Contacto</a></li>
+                <li><a href="propiedades-colombia.html" class="fullscreen-menu-link">Propiedades</a></li>
+                <li><a href="index.html#markets" class="fullscreen-menu-link">Mercados</a></li>
+                <li><a href="index.html#contact" class="fullscreen-menu-link">Contacto</a></li>
             </ul>
         </nav>
     </div>
@@ -247,54 +147,60 @@
             <div class="loading-property">Cargando detalles de la propiedad...</div>
             <div class="error-property" style="display: none;"></div>
 
-            <div id="property-content" style="display: none;">
-                <div class="swiper-container gallery-top">
-                    <div class="swiper-wrapper" id="property-images">
-                        </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-                <div class="swiper-container gallery-thumbs">
-                    <div class="swiper-wrapper" id="property-thumbnails">
-                        </div>
-                </div>
-
-                <div class="property-header">
-                    <h1 id="property-title"></h1>
-                    <p class="property-price" id="property-price"></p>
-                </div>
-
-                <div class="property-meta">
-                    <div class="meta-item"><span class="iconify" data-icon="ph:map-pin"></span> <span id="property-location"></span></div>
-                    <div class="meta-item"><span class="iconify" data-icon="ph:bed-bold"></span> <span id="property-bedrooms"></span></div>
-                    <div class="meta-item"><span class="iconify" data-icon="ph:bathtub-bold"></span> <span id="property-bathrooms"></span></div>
-                    <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span></div>
-                    <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span></div>
-                </div>
-
-                <div class="property-description">
-                    <h2>Descripción</h2>
-                    <div id="property-description-text"></div>
-                </div>
-
-                <div class="property-features">
-                    <h2>Características</h2>
-                    <div class="features-grid" id="property-features-list">
-                        </div>
-                </div>
+            <div id="property-content" class="property-layout" style="display: none;">
                 
-                <div class="property-location-info">
-                    <h2>Ubicación</h2>
-                     <div class="features-grid">
-                        <div class="feature-item"><span class="iconify" data-icon="ph:globe"></span> <strong>País:</strong> <span id="location-country"></span></div>
-                        <div class="feature-item"><span class="iconify" data-icon="ph:city"></span> <strong>Ciudad:</strong> <span id="location-city"></span></div>
-                        <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> <strong>Zona/Barrio:</strong> <span id="location-zone"></span></div>
+                <div class="gallery-column">
+                    <div class="swiper-container gallery-top">
+                        <div class="swiper-wrapper" id="property-images">
+                            </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <div class="swiper-container gallery-thumbs">
+                        <div class="swiper-wrapper" id="property-thumbnails">
+                            </div>
                     </div>
                 </div>
 
-                <div style="text-align: center; margin-top: 4rem;">
-                    <a href="mailto:info@fminmobiliaria.com" class="contact-owner-btn">Contactar al Asesor</a>
+                <div class="info-column">
+                    <div class="property-header">
+                        <h1 id="property-title"></h1>
+                        <p class="property-price" id="property-price"></p>
+                    </div>
+
+                    <div class="property-meta">
+                        <div class="meta-item"><span class="iconify" data-icon="ph:map-pin"></span> <span id="property-location"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:bed-bold"></span> <span id="property-bedrooms"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:bathtub-bold"></span> <span id="property-bathrooms"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span></div>
+                    </div>
+
+                    <div class="property-description">
+                        <h2>Descripción</h2>
+                        <div id="property-description-text"></div>
+                    </div>
+
+                    <div class="property-features">
+                        <h2>Características</h2>
+                        <div class="features-grid" id="property-features-list">
+                            </div>
+                    </div>
+                    
+                    <div class="property-location-info">
+                        <h2>Ubicación</h2>
+                         <div class="features-grid">
+                            <div class="feature-item"><span class="iconify" data-icon="ph:globe"></span> <strong>País:</strong> <span id="location-country"></span></div>
+                            <div class="feature-item"><span class="iconify" data-icon="ph:city"></span> <strong>Ciudad:</strong> <span id="location-city"></span></div>
+                            <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> <strong>Zona/Barrio:</strong> <span id="location-zone"></span></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <a href="mailto:info@fminmobiliaria.com" class="contact-owner-btn">Contactar al Asesor</a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </main>
@@ -304,12 +210,12 @@
             &copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.
         </div>
         <div class="social-links">
-             <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
-             <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
-             <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
-             <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
-             <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
-             <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
+            <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
+            <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
+            <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
+            <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
         </div>
     </footer>
 
@@ -343,7 +249,6 @@
             }
 
             try {
-                // Llama a la nueva función de API
                 const response = await fetch(`/api/getPropertyById?id=${propertyId}`);
                 if (!response.ok) {
                     throw new Error('No se pudo obtener la propiedad.');
@@ -353,8 +258,8 @@
                 if (!property || property.status === 'error') {
                     throw new Error('Propiedad no encontrada.');
                 }
-
-                // Poblar contenido dinámico
+                
+                // Populate content
                 document.title = `${property.title || 'Propiedad'} - FM Inmobiliaria`;
                 document.getElementById('property-title').textContent = property.title || 'Propiedad sin título';
                 document.getElementById('property-price').textContent = property.sale_price_label || property.rent_price_label || 'Consultar';
@@ -365,16 +270,14 @@
                 document.getElementById('property-garages').textContent = `${property.garages || 0} garajes`;
                 document.getElementById('property-description-text').innerHTML = property.observations || 'Descripción no disponible.';
 
-                // Poblar ubicación
+                // Populate location
                 document.getElementById('location-country').textContent = property.country_label || 'N/A';
                 document.getElementById('location-city').textContent = property.city_label || 'N/A';
                 document.getElementById('location-zone').textContent = property.zone_label || 'N/A';
 
-                // Poblar galería de imágenes
+                // Populate image gallery
                 const mainImageContainer = document.getElementById('property-images');
                 const thumbnailContainer = document.getElementById('property-thumbnails');
-                
-                // La API de una sola propiedad devuelve las galerías en un objeto. Lo convertimos a un array.
                 const images = property.galleries && property.galleries['0'] ? Object.values(property.galleries['0']) : [];
 
                 if (images.length > 0) {
@@ -386,7 +289,7 @@
                     mainImageContainer.innerHTML += `<div class="swiper-slide"><img src="https://placehold.co/1200x600/f5f5f5/1a1a1a?text=Sin+Imágenes" alt="Sin imágenes"></div>`;
                 }
                 
-                // Poblar características
+                // Populate features
                 const featuresContainer = document.getElementById('property-features-list');
                 const allFeatures = [...(property.features.internal || []), ...(property.features.external || [])];
                 if(allFeatures.length > 0) {
@@ -398,7 +301,7 @@
                 }
 
 
-                // Inicializar Swiper después de cargar las imágenes
+                // Initialize Swiper after loading images
                 const galleryThumbs = new Swiper('.gallery-thumbs', {
                     spaceBetween: 10,
                     slidesPerView: 4,
@@ -415,11 +318,11 @@
                     thumbs: {
                         swiper: galleryThumbs
                     },
-                    loop: images.length > 1, // El bucle solo tiene sentido si hay más de una imagen
+                    loop: images.length > 1,
                 });
 
                 loadingDiv.style.display = 'none';
-                propertyContent.style.display = 'block';
+                propertyContent.style.display = 'grid'; // Cambiado de 'block' a 'grid' para activar el layout
 
             } catch (error) {
                 console.error('Error al cargar la propiedad:', error);
