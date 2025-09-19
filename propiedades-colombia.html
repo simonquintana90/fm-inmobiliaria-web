@@ -180,8 +180,7 @@
         .property-info-top h4 { font-size: 1.25rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 1rem; }
         .property-type-tag { background-color: var(--gold); color: var(--dark); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; white-space: nowrap; }
         .property-location { color: #666; margin: 0.5rem 0 1rem 0; }
-        .property-details { display: flex; gap: 1.5rem; padding: 1rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-bottom: 1rem; }
-        .property-details-item { display: flex; align-items: center; gap: 0.5rem; color: #444; }
+        .property-details { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; padding: 1rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-bottom: 1rem; }        .property-details-item { display: flex; align-items: center; gap: 0.5rem; color: #444; }
         .property-price { font-size: 1.5rem; font-weight: 700; color: var(--dark); }
         .view-details-btn { background-color: var(--dark); color: var(--light); border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; text-decoration: none; }
         .loading-wasi { text-align: center; font-size: 1.2rem; color: #888; padding: 2rem; grid-column: 1 / -1; }
@@ -225,7 +224,6 @@
             .container { padding: 0 1.5rem; }
             .footer { flex-direction: column; gap: 1rem; text-align: center; }
             .property-grid { grid-template-columns: 1fr; }
-            .property-card { width: 100%; }
         }
     </style>
 </head>
