@@ -311,7 +311,8 @@
         }
         .property-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            /* AJUSTE PARA MÓVILES: Reducido el ancho mínimo a 320px */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
         .property-card {
@@ -478,7 +479,7 @@
             .service-item .service-number { justify-self: center; }
             .market-item { grid-template-columns: 1fr; }
             .market-item:nth-child(even) .market-image { order: 0; }
-            .property-grid { grid-template-columns: 1fr; }
+            /* No es necesario cambiar el grid aquí porque el ajuste de minmax funciona bien */
             .footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
 
@@ -555,7 +556,7 @@
                         <a href="propiedades-colombia.html" class="cta-button">Explorar</a>
                     </div>
                     <div class="market-image">
-                        <img src="https://images.pexels.com/photos/2884864/pexels-photo-2884864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Tall trees on the mountain ranges, Colombia">
+                        <img src="https://images.pexels.com/photos/1796794/pexels-photo-1796794.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Paisaje del Valle de Cocora, Colombia">
                     </div>
                 </div>
                 <div class="market-item">

@@ -167,7 +167,12 @@
         }
 
         /* === Estilos de Tarjetas === */
-        .property-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .property-grid { 
+            display: grid; 
+            /* AJUSTE PARA MÓVILES: Reducido el ancho mínimo a 300px */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 2rem; 
+        }
         .property-card { background-color: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; transition: all 0.3s ease; }
         .property-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0, 0.08); }
         .property-image-container { border-radius: 12px; overflow: hidden; height: 250px; margin-bottom: 1.5rem; }
@@ -361,7 +366,6 @@
                 const price = prop.for_sale === 'true' ? prop.sale_price_label : prop.rent_price_label;
                 const location = `${prop.city_label || ''}, ${prop.country_label || ''}`.replace(/^, |, $/g, '').trim();
                 const image = prop.main_image ? prop.main_image.url : 'https://placehold.co/600x400/f5f5f5/1a1a1a?text=Propiedad';
-                const title = prop.title || 'Propiedad sin título';
                 const type = prop.for_sale === 'true' ? 'Venta' : 'Arriendo';
                 const bedrooms = prop.bedrooms || 0;
                 const bathrooms = prop.bathrooms || 0;
@@ -489,9 +493,8 @@
         // --- Cargar todas las propiedades y datos de filtros ---
         async function fetchAllData() {
             try {
-                // Asegúrate de que esta URL sea correcta para tu API
-                const response = await fetch('/api/getAllProperties'); 
-                if (!response.ok) throw new Error('Error de red al cargar propiedades');
+                const response = await fetch('/api/getAllProperties');
+                if (!response.ok) throw new Error('Error de red');
                 
                 const data = await response.json();
                 allProperties = data.properties;
