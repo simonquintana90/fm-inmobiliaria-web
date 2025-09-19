@@ -21,9 +21,9 @@
             --font-main: 'Inter', sans-serif;
         }
 
-        /* === Base Styles (Navbar, Footer, etc. - sin cambios) === */
+        /* === Base Styles === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-main); background-color: var(--light); color: var(--dark); overflow-x: hidden; }
+        body { font-family: var(--font-main); background-color: #fff; color: var(--dark); overflow-x: hidden; }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
         .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 3rem; z-index: 1000; display: flex; justify-content: space-between; align-items: center; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
         .logo img { height: 50px; }
@@ -38,88 +38,63 @@
         .social-links a { color: var(--dark); text-decoration: none; transition: color 0.3s ease; }
         .social-links a:hover { color: var(--gold); }
 
-        /* === CAMBIOS PRINCIPALES PARA EL DISEÑO DE DOS COLUMNAS === */
-
+        /* === Estructura de Dos Columnas === */
         .property-detail-page {
             padding-top: 120px;
             padding-bottom: 5rem;
         }
-
         .property-layout {
             display: grid;
-            grid-template-columns: 1.2fr 1fr; /* Columna izquierda un poco más grande */
-            gap: 4rem; /* Espacio entre las columnas */
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
             align-items: flex-start;
         }
-
         .gallery-column {
-            position: sticky; /* Hace que la galería se quede fija al hacer scroll */
-            top: 120px; /* Espacio desde la parte superior */
+            position: sticky;
+            top: 120px;
         }
-        
-        .info-column {
-            /* Esta columna simplemente contendrá el texto */
-        }
-
         .loading-property, .error-property {
             text-align: center; font-size: 1.5rem; color: #888; padding: 5rem;
         }
 
-        /* Swiper Gallery */
-        .swiper-container {
-            width: 100%;
-            height: 500px;
-            margin-bottom: 1rem;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+        /* Galería de Imágenes */
+        .swiper-container { width: 100%; border-radius: 12px; overflow: hidden; }
+        .gallery-top { height: 500px; margin-bottom: 1rem; }
+        .gallery-thumbs { height: 90px; }
         .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
         .swiper-button-next, .swiper-button-prev { color: var(--light); }
-
-        .swiper-container-thumbs { height: 90px; }
         .swiper-slide-thumb { opacity: 0.6; border-radius: 8px; transition: opacity 0.3s ease; cursor: pointer; overflow: hidden; }
         .swiper-slide-thumb-active { opacity: 1; border: 3px solid var(--gold); }
 
-        /* Estilos de la información (pocos cambios) */
-        .property-header {
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
-        }
+        /* Columna de Información */
+        .property-header { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; }
         .property-header h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
         .property-price { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--gold); margin-top: 0.5rem; }
-
         .property-meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-bottom: 2rem; }
         .meta-item { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: #555; }
         .meta-item .iconify { font-size: 1.4rem; color: var(--dark); }
 
-        .property-description { font-size: 1.1rem; line-height: 1.7; margin-bottom: 3rem; color: #444; }
+        .property-section h2 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+        .property-description { font-size: 1.1rem; line-height: 1.7; color: #444; }
         .property-description p { margin-bottom: 1rem; }
-        .property-description h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-        
-        .property-features h2, .property-location-info h2 { font-size: 1.8rem; margin-bottom: 1.5rem; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
-        .feature-item { background-color: #fff; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; }
-        .feature-item .iconify { font-size: 1.5rem; color: var(--gold); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .feature-item { background-color: var(--light); padding: 1rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; }
+        .feature-item .iconify { font-size: 1.5rem; color: var(--gold); flex-shrink: 0; }
         .feature-item strong { margin-left: 0.5rem; }
 
         .contact-owner-btn { background-color: var(--gold); color: var(--dark); padding: 1rem 2.5rem; border-radius: 5px; text-decoration: none; font-weight: 500; display: inline-block; transition: all 0.3s ease; border: none; cursor: pointer; font-size: 1.1rem; }
         .contact-owner-btn:hover { background-color: var(--dark); color: var(--light); transform: translateY(-3px); }
 
-        /* Responsive para tablet y móvil */
+        /* Responsive */
         @media (max-width: 992px) {
-            .property-layout {
-                grid-template-columns: 1fr; /* Apila las columnas en pantallas más pequeñas */
-            }
-            .gallery-column {
-                position: static; /* Desactiva el 'sticky' */
-                top: auto;
-            }
+            .property-layout { grid-template-columns: 1fr; }
+            .gallery-column { position: static; top: auto; }
+            .info-column { margin-top: 3rem; }
         }
         @media (max-width: 768px) {
             .container { padding: 0 1.5rem; }
-            .swiper-container { height: 300px; }
-            .swiper-container-thumbs { display: none; }
+            .gallery-top { height: 300px; }
+            .gallery-thumbs { display: none; }
         }
     </style>
 </head>
@@ -135,9 +110,9 @@
     <div class="fullscreen-menu">
         <nav class="fullscreen-menu-nav">
             <ul>
-                <li><a href="propiedades-colombia.html" class="fullscreen-menu-link">Propiedades</a></li>
-                <li><a href="index.html#markets" class="fullscreen-menu-link">Mercados</a></li>
-                <li><a href="index.html#contact" class="fullscreen-menu-link">Contacto</a></li>
+                 <li><a href="propiedades-colombia.html" class="fullscreen-menu-link">Propiedades</a></li>
+                 <li><a href="index.html#markets" class="fullscreen-menu-link">Mercados</a></li>
+                 <li><a href="index.html#contact" class="fullscreen-menu-link">Contacto</a></li>
             </ul>
         </nav>
     </div>
@@ -148,17 +123,12 @@
             <div class="error-property" style="display: none;"></div>
 
             <div id="property-content" class="property-layout" style="display: none;">
-                
                 <div class="gallery-column">
                     <div class="swiper-container gallery-top">
-                        <div class="swiper-wrapper" id="property-images">
-                            </div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-wrapper" id="property-images"></div>
                     </div>
                     <div class="swiper-container gallery-thumbs">
-                        <div class="swiper-wrapper" id="property-thumbnails">
-                            </div>
+                        <div class="swiper-wrapper" id="property-thumbnails"></div>
                     </div>
                 </div>
 
@@ -167,7 +137,6 @@
                         <h1 id="property-title"></h1>
                         <p class="property-price" id="property-price"></p>
                     </div>
-
                     <div class="property-meta">
                         <div class="meta-item"><span class="iconify" data-icon="ph:map-pin"></span> <span id="property-location"></span></div>
                         <div class="meta-item"><span class="iconify" data-icon="ph:bed-bold"></span> <span id="property-bedrooms"></span></div>
@@ -175,19 +144,15 @@
                         <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span></div>
                         <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span></div>
                     </div>
-
-                    <div class="property-description">
+                    <div class="property-section property-description">
                         <h2>Descripción</h2>
                         <div id="property-description-text"></div>
                     </div>
-
-                    <div class="property-features">
+                    <div class="property-section property-features">
                         <h2>Características</h2>
-                        <div class="features-grid" id="property-features-list">
-                            </div>
+                        <div class="features-grid" id="property-features-list"></div>
                     </div>
-                    
-                    <div class="property-location-info">
+                    <div class="property-section property-location-info">
                         <h2>Ubicación</h2>
                          <div class="features-grid">
                             <div class="feature-item"><span class="iconify" data-icon="ph:globe"></span> <strong>País:</strong> <span id="location-country"></span></div>
@@ -195,27 +160,23 @@
                             <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> <strong>Zona/Barrio:</strong> <span id="location-zone"></span></div>
                         </div>
                     </div>
-
-                    <div style="margin-top: 2rem;">
+                    <div style="margin-top: 2rem; text-align: center;">
                         <a href="mailto:info@fminmobiliaria.com" class="contact-owner-btn">Contactar al Asesor</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        <div class="copyright">
-            &copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.
-        </div>
+        <div class="copyright">&copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.</div>
         <div class="social-links">
-            <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
-            <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
-            <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
-            <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
-            <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
-            <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
+             <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
+             <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
+             <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
+             <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
+             <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
+             <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
         </div>
     </footer>
 
@@ -231,14 +192,6 @@
             const errorDiv = document.querySelector('.error-property');
             const propertyContent = document.getElementById('property-content');
 
-            // --- Menu Logic ---
-            const menuButton = document.querySelector('.menu-button');
-            const fullscreenMenu = document.querySelector('.fullscreen-menu');
-            const menuLinks = document.querySelectorAll('.fullscreen-menu-link');
-            const menuTl = gsap.timeline({ paused: true });
-            menuTl.to(fullscreenMenu, { visibility: 'visible', duration: 0.01 }).to(fullscreenMenu, { opacity: 1, duration: 0.5, ease: 'power2.inOut' }).to(menuLinks, { y: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out' }, "-=0.3");
-            menuButton.addEventListener('click', (e) => { e.preventDefault(); if (menuButton.classList.contains('menu-open')) { menuButton.textContent = 'Menú'; menuTl.reverse(); } else { menuButton.textContent = 'Cerrar'; menuTl.play(); } menuButton.classList.toggle('menu-open'); });
-            menuLinks.forEach(link => { link.addEventListener('click', () => { menuButton.textContent = 'Menú'; menuTl.reverse(); menuButton.classList.remove('menu-open'); }); });
             document.getElementById('year').textContent = new Date().getFullYear();
 
             if (!propertyId) {
@@ -250,15 +203,11 @@
 
             try {
                 const response = await fetch(`/api/getPropertyById?id=${propertyId}`);
-                if (!response.ok) {
-                    throw new Error('No se pudo obtener la propiedad.');
-                }
-                const property = await response.json();
-
-                if (!property || property.status === 'error') {
-                    throw new Error('Propiedad no encontrada.');
-                }
+                if (!response.ok) throw new Error('No se pudo obtener la propiedad.');
                 
+                const property = await response.json();
+                if (!property || property.status === 'error') throw new Error('Propiedad no encontrada.');
+
                 // Populate content
                 document.title = `${property.title || 'Propiedad'} - FM Inmobiliaria`;
                 document.getElementById('property-title').textContent = property.title || 'Propiedad sin título';
@@ -270,7 +219,6 @@
                 document.getElementById('property-garages').textContent = `${property.garages || 0} garajes`;
                 document.getElementById('property-description-text').innerHTML = property.observations || 'Descripción no disponible.';
 
-                // Populate location
                 document.getElementById('location-country').textContent = property.country_label || 'N/A';
                 document.getElementById('location-city').textContent = property.city_label || 'N/A';
                 document.getElementById('location-zone').textContent = property.zone_label || 'N/A';
@@ -300,29 +248,12 @@
                     featuresContainer.innerHTML = "<p>No hay características adicionales especificadas.</p>";
                 }
 
-
-                // Initialize Swiper after loading images
-                const galleryThumbs = new Swiper('.gallery-thumbs', {
-                    spaceBetween: 10,
-                    slidesPerView: 4,
-                    freeMode: true,
-                    watchSlidesProgress: true,
-                     breakpoints: { 640: { slidesPerView: 5 }, 1024: { slidesPerView: 7 } }
-                });
-                const galleryTop = new Swiper('.gallery-top', {
-                    spaceBetween: 10,
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    thumbs: {
-                        swiper: galleryThumbs
-                    },
-                    loop: images.length > 1,
-                });
+                // Initialize Swiper
+                const galleryThumbs = new Swiper('.gallery-thumbs', { spaceBetween: 10, slidesPerView: 'auto', freeMode: true, watchSlidesProgress: true });
+                const galleryTop = new Swiper('.gallery-top', { spaceBetween: 10, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, thumbs: { swiper: galleryThumbs }, loop: images.length > 1 });
 
                 loadingDiv.style.display = 'none';
-                propertyContent.style.display = 'grid'; // Cambiado de 'block' a 'grid' para activar el layout
+                propertyContent.style.display = 'grid';
 
             } catch (error) {
                 console.error('Error al cargar la propiedad:', error);
