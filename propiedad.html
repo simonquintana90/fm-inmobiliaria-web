@@ -45,40 +45,48 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            position: relative;
+            position: relative; /* Importante para posicionar las flechas */
         }
         .swiper-container { width: 100%; }
         .gallery-top { height: 60vh; max-height: 600px; }
         .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* === ESTILOS DE FLECHAS SVG === */
+        /* === ESTILOS DE FLECHAS PERSONALIZADAS CON ICONIFY === */
         .swiper-button-custom {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             z-index: 10;
             cursor: pointer;
-            background-color: rgba(26, 26, 26, 0.5);
+            background-color: rgba(26, 26, 26, 0.5); /* Fondo oscuro semi-transparente */
             border-radius: 50%;
-            width: 44px;
+            width: 44px; /* Tamaño del círculo */
             height: 44px;
-            display: flex;
+            display: flex; /* Para centrar el icono */
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        .swiper-button-custom svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
+
+        .swiper-button-custom .iconify {
+            color: #fff; /* Color del icono blanco */
+            font-size: 24px; /* Tamaño del icono */
+            line-height: 1; /* Asegura que el icono no añada espacio extra */
         }
+
         .swiper-button-custom:hover {
-            background-color: rgba(26, 26, 26, 0.7);
-            transform: translateY(-50%) scale(1.05);
+            background-color: rgba(26, 26, 26, 0.7); /* Más oscuro al pasar el ratón */
+            transform: translateY(-50%) scale(1.08); /* Ligeramente más grande */
         }
-        .swiper-button-prev-custom { left: 15px; }
-        .swiper-button-next-custom { right: 15px; }
-        /* === FIN ESTILOS DE FLECHAS SVG === */
+
+        .swiper-button-prev-custom {
+            left: 15px; /* Posición del botón izquierdo */
+        }
+
+        .swiper-button-next-custom {
+            right: 15px; /* Posición del botón derecho */
+        }
+        /* === FIN ESTILOS DE FLECHAS PERSONALIZADAS CON ICONIFY === */
 
         .gallery-thumbs { height: 100px; margin-top: 4px;}
         .swiper-slide-thumb { opacity: 0.7; cursor: pointer; transition: opacity 0.3s; }
@@ -135,7 +143,11 @@
 <body>
 
     <nav class="navbar">
-        </nav>
+        <a href="index.html" class="logo">
+            <img src="https://fminmobiliaria.com.co/wp-content/uploads/2023/05/LOGO-FINAL-FM_Mesa-de-trabajo-1.png" alt="Logo FM Inmobiliaria">
+        </a>
+        <a href="#" class="menu-button">Menú</a>
+    </nav>
     
     <main class="property-detail-page">
         <div class="container">
@@ -150,10 +162,10 @@
                     </div>
                     
                     <div class="swiper-button-custom swiper-button-prev-custom">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                        <span class="iconify" data-icon="ph:arrow-left-bold"></span>
                     </div>
                     <div class="swiper-button-custom swiper-button-next-custom">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+                        <span class="iconify" data-icon="ph:arrow-right-bold"></span>
                     </div>
 
                     <div class="swiper-container gallery-thumbs">
@@ -162,23 +174,63 @@
                 </div>
 
                 <div class="info-box">
+                    <div class="property-header">
+                        <h1 id="property-title"></h1>
+                        <p class="property-price" id="property-price"></p>
                     </div>
+                    <div class="property-meta">
+                        <div class="meta-item"><span class="iconify" data-icon="ph:map-pin"></span> <span id="property-location"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:bed-bold"></span> <span id="property-bedrooms"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:bathtub-bold"></span> <span id="property-bathrooms"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span></div>
+                        <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span></div>
+                    </div>
+                    <div class="contact-container">
+                        <a href="#" id="whatsapp-link-top" class="contact-owner-btn" target="_blank">Contactar por WhatsApp</a>
+                    </div>
+                </div>
                 
                 <div class="additional-info">
-                   </div>
+                    <div class="property-section property-description">
+                        <h2>Descripción</h2>
+                        <div id="property-description-text"></div>
+                    </div>
+                    <div class="property-section property-features">
+                        <h2>Características</h2>
+                        <div class="features-grid" id="property-features-list"></div>
+                    </div>
+                     <div class="property-section property-location-info">
+                        <h2>Ubicación</h2>
+                         <div class="features-grid">
+                            <div class="feature-item"><span class="iconify" data-icon="ph:globe"></span> <strong>País:</strong> <span id="location-country"></span></div>
+                            <div class="feature-item"><span class="iconify" data-icon="ph:city"></span> <strong>Ciudad:</strong> <span id="location-city"></span></div>
+                            <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> <strong>Zona/Barrio:</strong> <span id="location-zone"></span></div>
+                        </div>
+                    </div>
+                    <div class="contact-container">
+                        <a href="#" id="whatsapp-link-bottom" class="contact-owner-btn" target="_blank">Contactar por WhatsApp</a>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        </footer>
+        <div class="copyright">&copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.</div>
+        <div class="social-links">
+            <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
+            <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
+            <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
+            <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // Todo el JavaScript permanece exactamente igual que en la versión anterior.
-            // No es necesario cambiarlo, ya que ahora apunta a los nuevos selectores de las flechas.
             const urlParams = new URLSearchParams(window.location.search);
             const propertyId = urlParams.get('id');
 
@@ -249,7 +301,7 @@
                     featuresContainer.innerHTML = "<p>No hay características adicionales especificadas.</p>";
                 }
 
-                // Initialize Swiper (usando las flechas personalizadas)
+                // Initialize Swiper (usando las flechas personalizadas de Iconify)
                 const galleryThumbs = new Swiper('.gallery-thumbs', { spaceBetween: 10, slidesPerView: 'auto', freeMode: true, watchSlidesProgress: true });
                 const galleryTop = new Swiper('.gallery-top', { 
                     spaceBetween: 10, 
