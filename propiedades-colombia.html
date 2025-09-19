@@ -225,7 +225,6 @@
             .container { padding: 0 1.5rem; }
             .footer { flex-direction: column; gap: 1rem; text-align: center; }
             .property-grid { grid-template-columns: 1fr; }
-            .property-card { width: 100%; }
         }
     </style>
 </head>
@@ -348,7 +347,6 @@
         const clearFiltersBtn = document.getElementById('clear-filters-btn');
         const paginationContainer = document.querySelector('.pagination-container');
 
-        // Función para renderizar propiedades
         function renderProperties() {
             gridContainer.innerHTML = '';
             const startIndex = (currentPage - 1) * propertiesPerPage;
@@ -390,7 +388,6 @@
             gridContainer.innerHTML = html;
         }
         
-        // Función para configurar la paginación
         function setupPagination() {
             paginationContainer.innerHTML = '';
             const pageCount = Math.ceil(filteredProperties.length / propertiesPerPage);
@@ -440,7 +437,6 @@
             paginationContainer.appendChild(nextButton);
         }
 
-        // Función para poblar los filtros con botones
         function populateFilters(data) {
             const { cities, propertyTypes } = data;
             
@@ -459,7 +455,6 @@
             });
         }
 
-        // Función para aplicar filtros
         function applyFilters() {
             const searchTerm = searchInput.value.toLowerCase();
             const selectedOperation = document.querySelector('input[name="operation_type"]:checked').value;
@@ -481,7 +476,6 @@
             setupPagination();
         }
 
-        // Función para limpiar filtros
         function clearFilters() {
             searchInput.value = '';
             document.querySelector('input[name="operation_type"][value=""]').checked = true;
@@ -490,7 +484,6 @@
             applyFilters();
         }
         
-        // --- Cargar todas las propiedades y datos de filtros ---
         async function fetchAllData() {
             try {
                 const response = await fetch('/api/getAllProperties');
@@ -514,7 +507,6 @@
         
         fetchAllData();
         
-        // Event Listeners
         applyFiltersBtn.addEventListener('click', applyFilters);
         searchBarBtn.addEventListener('click', applyFilters);
         clearFiltersBtn.addEventListener('click', clearFilters);
@@ -522,18 +514,16 @@
             if (e.key === 'Enter') applyFilters();
         });
 
-
-        // Lógica de Menú y Footer
         const menuButton = document.querySelector('.menu-button');
         const fullscreenMenu = document.querySelector('.fullscreen-menu');
         const menuLinks = document.querySelectorAll('.fullscreen-menu-link');
         const menuTl = gsap.timeline({ paused: true });
         menuTl.to(fullscreenMenu, { visibility: 'visible', duration: 0.01 }).to(fullscreenMenu, { opacity: 1, duration: 0.5, ease: 'power2.inOut' }).to(menuLinks, { y: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out' }, "-=0.3");
         menuButton.addEventListener('click', (e) => { e.preventDefault(); if (menuButton.classList.contains('menu-open')) { menuButton.textContent = 'Menú'; menuTl.reverse(); document.body.style.overflow = ''; } else { menuButton.textContent = 'Cerrar'; menuTl.play(); document.body.style.overflow = 'hidden'; } menuButton.classList.toggle('menu-open'); });
-        menuLinks.forEach(link => { link.addEventListener('click', (e) => { menuButton.textContent = 'Menú'; menuTl.reverse(); document.body.style.overflow = ''; menuButton.classList.remove('menu-open'); }); });
+        menuLinks.forEach(link => { link.addEventListener('click', () => { menuButton.textContent = 'Menú'; menuTl.reverse(); document.body.style.overflow = ''; menuButton.classList.remove('menu-open'); }); });
+        
         document.getElementById('year').textContent = new Date().getFullYear();
         
-        // Animación del título
         const titleWords = gsap.utils.toArray('.page-header .word');
         titleWords.forEach(word => {
             const chars = word.querySelectorAll('.char');
