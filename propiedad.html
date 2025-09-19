@@ -45,36 +45,47 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            position: relative; /* Importante para posicionar las flechas */
         }
         .swiper-container { width: 100%; }
         .gallery-top { height: 60vh; max-height: 600px; }
         .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* === ESTILOS DE FLECHAS MEJORADOS Y ESTÉTICOS === */
-        .swiper-button-next, .swiper-button-prev {
-            color: #fff; /* Icono blanco */
-            background-color: rgba(0,0,0,0.3); /* Fondo semitransparente más sutil */
-            border-radius: 50%; /* Completamente circular */
-            width: 40px; /* Tamaño del botón, un poco más pequeño */
-            height: 40px; 
-            display: flex; /* Para centrar el icono de flecha */
+        /* === NUEVOS ESTILOS DE FLECHAS PERSONALIZADAS === */
+        .swiper-button-custom {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente oscuro */
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Transición suave */
-            --swiper-navigation-size: 18px; /* Tamaño del icono */
-            top: 50%; /* Centrado vertical */
-            transform: translateY(-50%); /* Ajuste fino para centrado */
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .swiper-button-next:hover, .swiper-button-prev:hover {
-            background-color: rgba(0,0,0,0.5); /* Se oscurece un poco al pasar el ratón */
-            transform: translateY(-50%) scale(1.05); /* Ligeramente más grande al pasar el ratón */
+        .swiper-button-custom .iconify {
+            color: #fff; /* Color del icono blanco */
+            font-size: 24px; /* Tamaño del icono */
         }
 
-        /* Ajuste de posición: más cerca del borde y sin sombra brusca */
-        .swiper-button-next { right: 10px; } /* Más cerca del borde derecho */
-        .swiper-button-prev { left: 10px; } /* Más cerca del borde izquierdo */
-        /* === FIN ESTILOS DE FLECHAS MEJORADOS === */
+        .swiper-button-custom:hover {
+            background-color: rgba(0, 0, 0, 0.6); /* Más oscuro al pasar el ratón */
+            transform: translateY(-50%) scale(1.08); /* Ligeramente más grande */
+        }
+
+        .swiper-button-prev-custom {
+            left: 15px; /* Posición del botón izquierdo */
+        }
+
+        .swiper-button-next-custom {
+            right: 15px; /* Posición del botón derecho */
+        }
+        /* === FIN NUEVOS ESTILOS DE FLECHAS PERSONALIZADAS === */
 
 
         .gallery-thumbs { height: 100px; margin-top: 4px;}
@@ -112,8 +123,31 @@
         .feature-item { background-color: var(--light); padding: 1rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; font-size: 1rem; }
         .feature-item .iconify { font-size: 1.5rem; color: var(--gold); flex-shrink: 0; }
 
-        .contact-owner-btn { background-color: var(--gold); color: var(--dark); padding: 1rem 2.5rem; border-radius: 5px; text-decoration: none; font-weight: 500; display: inline-block; transition: all 0.3s ease; border: none; cursor: pointer; font-size: 1.1rem; }
-        .contact-owner-btn:hover { background-color: var(--dark); color: var(--light); transform: translateY(-3px); }
+        .contact-owner-btn {
+            background-color: var(--gold);
+            color: var(--dark);
+            padding: 1rem 2.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .contact-owner-btn:hover {
+            background-color: var(--dark);
+            color: var(--light);
+            transform: translateY(-3px);
+        }
+        
+        .contact-container {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -126,6 +160,7 @@
     </style>
 </head>
 <body>
+
     <nav class="navbar">
         <a href="index.html" class="logo">
             <img src="https://fminmobiliaria.com.co/wp-content/uploads/2023/05/LOGO-FINAL-FM_Mesa-de-trabajo-1.png" alt="Logo FM Inmobiliaria">
@@ -143,9 +178,14 @@
                 <div class="gallery-container">
                     <div class="swiper-container gallery-top">
                         <div class="swiper-wrapper" id="property-images"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
                     </div>
+                    <div class="swiper-button-custom swiper-button-prev-custom">
+                        <span class="iconify" data-icon="ph:chevron-left-bold"></span>
+                    </div>
+                    <div class="swiper-button-custom swiper-button-next-custom">
+                        <span class="iconify" data-icon="ph:chevron-right-bold"></span>
+                    </div>
+
                     <div class="swiper-container gallery-thumbs">
                         <div class="swiper-wrapper" id="property-thumbnails"></div>
                     </div>
@@ -162,6 +202,9 @@
                         <div class="meta-item"><span class="iconify" data-icon="ph:bathtub-bold"></span> <span id="property-bathrooms"></span></div>
                         <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span></div>
                         <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span></div>
+                    </div>
+                    <div class="contact-container">
+                        <a href="#" id="whatsapp-link-top" class="contact-owner-btn" target="_blank">Contactar por WhatsApp</a>
                     </div>
                 </div>
                 
@@ -182,11 +225,10 @@
                             <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> <strong>Zona/Barrio:</strong> <span id="location-zone"></span></div>
                         </div>
                     </div>
-                    <div style="text-align: center; margin-top: 2rem;">
-                        <a href="mailto:info@fminmobiliaria.com" class="contact-owner-btn">Contactar al Asesor</a>
+                    <div class="contact-container">
+                        <a href="#" id="whatsapp-link-bottom" class="contact-owner-btn" target="_blank">Contactar por WhatsApp</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
@@ -194,12 +236,12 @@
     <footer class="footer">
         <div class="copyright">&copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.</div>
         <div class="social-links">
-             <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
-             <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
-             <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
-             <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
-             <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
-             <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
+            <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
+            <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
+            <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
+            <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
+            <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
         </div>
     </footer>
 
@@ -230,7 +272,7 @@
                 const property = await response.json();
                 if (!property || property.status === 'error') throw new Error('Propiedad no encontrada.');
 
-                // Populate content
+                // --- Poblar contenido de la página ---
                 document.title = `${property.title || 'Propiedad'} - FM Inmobiliaria`;
                 document.getElementById('property-title').textContent = property.title || 'Propiedad sin título';
                 document.getElementById('property-price').textContent = property.sale_price_label || property.rent_price_label || 'Consultar';
@@ -244,7 +286,18 @@
                 document.getElementById('location-city').textContent = property.city_label || 'N/A';
                 document.getElementById('location-zone').textContent = property.zone_label || 'N/A';
 
-                // Populate gallery
+                // --- Crear el enlace de WhatsApp ---
+                const phoneNumber = "573132617894"; // Sin el "+"
+                const propertyLink = window.location.href;
+                const message = encodeURIComponent(`¡Hola! Estoy interesado en esta propiedad: ${propertyLink}`);
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+                // Asignar la URL a ambos botones
+                document.getElementById('whatsapp-link-top').href = whatsappUrl;
+                document.getElementById('whatsapp-link-bottom').href = whatsappUrl;
+
+
+                // --- Poblar galería ---
                 const mainImageContainer = document.getElementById('property-images');
                 const thumbnailContainer = document.getElementById('property-thumbnails');
                 const images = property.galleries && property.galleries['0'] ? Object.values(property.galleries['0']) : [];
@@ -258,7 +311,7 @@
                     mainImageContainer.innerHTML += `<div class="swiper-slide"><img src="https://placehold.co/1200x600/f5f5f5/1a1a1a?text=Sin+Imágenes" alt="Sin imágenes"></div>`;
                 }
                 
-                // Populate features
+                // --- Poblar características ---
                 const featuresContainer = document.getElementById('property-features-list');
                 const allFeatures = [...(property.features.internal || []), ...(property.features.external || [])];
                 if(allFeatures.length > 0) {
@@ -269,9 +322,17 @@
                     featuresContainer.innerHTML = "<p>No hay características adicionales especificadas.</p>";
                 }
 
-                // Initialize Swiper
+                // --- Inicializar Swiper (usando las flechas personalizadas) ---
                 const galleryThumbs = new Swiper('.gallery-thumbs', { spaceBetween: 10, slidesPerView: 'auto', freeMode: true, watchSlidesProgress: true });
-                const galleryTop = new Swiper('.gallery-top', { spaceBetween: 10, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, thumbs: { swiper: galleryThumbs }, loop: images.length > 1 });
+                const galleryTop = new Swiper('.gallery-top', { 
+                    spaceBetween: 10, 
+                    navigation: { 
+                        nextEl: '.swiper-button-next-custom', 
+                        prevEl: '.swiper-button-prev-custom' 
+                    }, 
+                    thumbs: { swiper: galleryThumbs }, 
+                    loop: images.length > 1 
+                });
 
                 loadingDiv.style.display = 'none';
                 propertyContent.style.display = 'block';
