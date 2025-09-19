@@ -112,7 +112,7 @@
         }
         .results-container {
             flex-grow: 1;
-            min-width: 0; /* CORRECCIÓN CLAVE PARA EL DESBORDE */
+            min-width: 0;
         }
 
         .filters-sidebar h3 {
@@ -169,7 +169,6 @@
         /* === Estilos de Tarjetas === */
         .property-grid { 
             display: grid; 
-            /* AJUSTE PARA MÓVILES: Reducido el ancho mínimo a 300px */
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
             gap: 2rem; 
         }
@@ -383,7 +382,7 @@
                         </div>
                         <div class="property-info-bottom">
                             <p class="property-price">${price}</p>
-                            <a href="propiedad.html?id=${prop.id_property}" class="cta-button view-details-btn">Ver Detalles</a>
+                            <a href="propiedad.html?id=${prop.id_property}" class="view-details-btn">Ver Detalles</a>
                         </div>
                     </div>`;
             });
