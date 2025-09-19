@@ -220,10 +220,23 @@
             .filters-sidebar { width: 100%; margin-bottom: 2rem; }
         }
         @media (max-width: 768px) {
-            .navbar { padding: 1.5rem; }
-            .container { padding: 0 1.5rem; }
-            .footer { flex-direction: column; gap: 1rem; text-align: center; }
-            .property-grid { grid-template-columns: 1fr; }
+        .navbar { padding: 1.5rem; }
+        .container { padding: 0 1.5rem; }
+        .footer { flex-direction: column; gap: 1rem; text-align: center; }
+        .property-grid { grid-template-columns: 1fr; }
+
+        /* Reglas para forzar el ajuste de las tarjetas en móvil */
+        .property-card {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .property-details {
+            flex-wrap: wrap; /* Permite que los items se reordenen */
+        }
+        .property-info-top, .property-info-bottom, .property-details {
+            min-width: 0; /* Forza a los contenedores flex a encogerse */
+        }
         }
     </style>
 </head>
