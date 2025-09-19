@@ -381,15 +381,6 @@
             font-weight: 700;
             color: var(--dark);
         }
-        .loading-wasi {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #888;
-            padding: 2rem;
-            grid-column: 1 / -1;
-        }
-        
-        /* === NUEVO ESTILO PARA EL BOTÓN === */
         .view-details-btn {
             background-color: var(--dark);
             color: var(--light);
@@ -408,6 +399,13 @@
             color: var(--dark);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0, 0.1);
+        }
+        .loading-wasi {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #888;
+            padding: 2rem;
+            grid-column: 1 / -1;
         }
 
         /* === CTA Section === */
@@ -570,7 +568,7 @@
                         <img src="https://images.pexels.com/photos/290386/pexels-photo-290386.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Paisaje de Nueva York, Estados Unidos">
                     </div>
                 </div>
-                <div class="market-item">
+                <div class="market-item" style="display: none;">
                     <div class="market-info">
                         <h3>Panamá</h3>
                         <p>Un puente entre dos mundos, Panamá ofrece oportunidades únicas de inversión. Explora nuestra selección de propiedades modernas en un paraíso tropical.</p>
@@ -645,93 +643,46 @@
                 
                 let html = '';
                 propertiesData.forEach(prop => {
-                    // Verificación para saltar propiedades sin ID o título
                     if (!prop || !prop.id_property || !prop.title) return;
-
                     const price = prop.for_sale === 'true' ? prop.sale_price_label : prop.rent_price_label;
                     const location = `${prop.city_label || ''}, ${prop.country_label || ''}`.replace(/^, |, $/g, '').trim();
                     const image = prop.main_image ? prop.main_image.url : 'https://placehold.co/600x400/f5f5f5/1a1a1a?text=Propiedad';
-                    const title = prop.title || 'Propiedad sin título';
                     const type = prop.for_sale === 'true' ? 'Venta' : 'Arriendo';
                     const bedrooms = prop.bedrooms || 0;
                     const bathrooms = prop.bathrooms || 0;
                     const area = prop.built_area || '--';
-
                     html += `
                         <div class="property-card">
-                            <div class="property-image-container">
-                                <img src="${image}" alt="${title}">
-                            </div>
-                            <div class="property-info-top">
-                                <h4>${title}</h4>
-                                <span class="property-type-tag">${type}</span>
-                            </div>
+                            <div class="property-image-container"><img src="${image}" alt="${prop.title}"></div>
+                            <div class="property-info-top"><h4>${prop.title}</h4><span class="property-type-tag">${type}</span></div>
                             <p class="property-location">${location}</p>
                             <div class="property-details">
-                                <div class="property-details-item">
-                                    <span class="iconify" data-icon="ph:bed-bold"></span>
-                                    <span>${bedrooms} hab.</span>
-                                </div>
-                                <div class="property-details-item">
-                                    <span class="iconify" data-icon="ph:bathtub-bold"></span>
-                                    <span>${bathrooms} baños</span>
-                                </div>
-                                <div class="property-details-item">
-                                    <span class="iconify" data-icon="ph:ruler-bold"></span>
-                                    <span>${area} m²</span>
-                                </div>
+                                <div class="property-details-item"><span class="iconify" data-icon="ph:bed-bold"></span><span>${bedrooms} hab.</span></div>
+                                <div class="property-details-item"><span class="iconify" data-icon="ph:bathtub-bold"></span><span>${bathrooms} baños</span></div>
+                                <div class="property-details-item"><span class="iconify" data-icon="ph:ruler-bold"></span><span>${area} m²</span></div>
                             </div>
                             <div class="property-info-bottom">
-                                 <p class="property-price">${price}</p>
-                                 <a href="propiedad.html?id=${prop.id_property}" class="view-details-btn">Ver Detalles</a>
+                                <p class="property-price">${price}</p>
+                                <a href="propiedad.html?id=${prop.id_property}" class="view-details-btn">Ver Detalles</a>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-
                 gridContainer.innerHTML = html;
                 loading.style.display = 'none';
-
             } catch (error) {
                 console.error("Error al obtener las propiedades de Wasi:", error);
                 loading.textContent = 'No se pudieron cargar las propiedades.';
             }
         }
         fetchWasiProperties();
-
-
-        // --- LOADER ---
         const loaderTl = gsap.timeline();
-        loaderTl.to('.loader-logo', { opacity: 0, duration: 0.5, delay: 1 })
-                .to('.loader', { y: '-100%', duration: 1, ease: 'power2.inOut' });
-
-        // --- NAVBAR SCROLL BEHAVIOR ---
-        ScrollTrigger.create({
-            start: 'top -80',
-            end: 99999,
-            toggleClass: { className: 'scrolled', targets: '.navbar' }
-        });
-
-        // --- MENU LOGIC ---
+        loaderTl.to('.loader-logo', { opacity: 0, duration: 0.5, delay: 1 }).to('.loader', { y: '-100%', duration: 1, ease: 'power2.inOut' });
+        ScrollTrigger.create({ start: 'top -80', end: 99999, toggleClass: { className: 'scrolled', targets: '.navbar' } });
         const menuButton = document.querySelector('.menu-button');
         const fullscreenMenu = document.querySelector('.fullscreen-menu');
         const menuLinks = document.querySelectorAll('.fullscreen-menu-link');
         const menuTl = gsap.timeline({ paused: true });
-
-        menuTl.to(fullscreenMenu, {
-            visibility: 'visible',
-            duration: 0.01
-        }).to(fullscreenMenu, {
-            opacity: 1,
-            duration: 0.5,
-            ease: 'power2.inOut'
-        }).to(menuLinks, {
-            y: 0,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: 'power3.out'
-        }, "-=0.3");
-
+        menuTl.to(fullscreenMenu, { visibility: 'visible', duration: 0.01 }).to(fullscreenMenu, { opacity: 1, duration: 0.5, ease: 'power2.inOut' }).to(menuLinks, { y: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out' }, "-=0.3");
         menuButton.addEventListener('click', (e) => {
             e.preventDefault();
             if (menuButton.classList.contains('menu-open')) {
@@ -745,97 +696,27 @@
             }
             menuButton.classList.toggle('menu-open');
         });
-
         menuLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+            link.addEventListener('click', () => {
                 menuButton.textContent = 'Menú';
                 menuTl.reverse();
                 document.body.style.overflow = '';
                 menuButton.classList.remove('menu-open');
             });
         });
-
-
-        // --- HERO TEXT ANIMATION ---
         const heroTl = gsap.timeline({ delay: 1.5 });
-        heroTl.to('.hero .char', {
-            y: 0,
-            stagger: 0.05,
-            duration: 1,
-            ease: 'power3.out'
-        })
-        .from(['.hero p', '.hero .cta-button'], { opacity: 0, y: 20, duration: 1, stagger: 0.2 }, "-=0.5");
-
-        // --- MANIFESTO SCROLL ANIMATION ---
-        gsap.from('.manifesto-text', {
-            scrollTrigger: {
-                trigger: '.manifesto',
-                start: 'top 80%',
-                end: 'bottom top',
-                scrub: true,
-            },
-            opacity: 0,
-            y: 50
-        });
-        
-        // --- SERVICES SCROLL ANIMATION ---
+        heroTl.to('.hero .char', { y: 0, stagger: 0.05, duration: 1, ease: 'power3.out' }).from(['.hero p', '.hero .cta-button'], { opacity: 0, y: 20, duration: 1, stagger: 0.2 }, "-=0.5");
+        gsap.from('.manifesto-text', { scrollTrigger: { trigger: '.manifesto', start: 'top 80%', end: 'bottom top', scrub: true, }, opacity: 0, y: 50 });
         gsap.utils.toArray('.service-item').forEach(item => {
-            gsap.from(item, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse'
-                },
-                opacity: 0,
-                y: 50,
-                duration: 1
-            });
+            gsap.from(item, { scrollTrigger: { trigger: item, start: 'top 85%', toggleActions: 'play none none reverse' }, opacity: 0, y: 50, duration: 1 });
         });
-
-        // --- MARKETS SCROLL ANIMATION (PARALLAX) ---
         gsap.utils.toArray('.market-item').forEach(item => {
             const image = item.querySelector('.market-image img');
-            gsap.to(image, {
-                yPercent: -10,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: item,
-                    scrub: true
-                },
-            });
+            gsap.to(image, { yPercent: -10, ease: "none", scrollTrigger: { trigger: item, scrub: true }, });
         });
-        
-        // --- Gallery Cards Animation ---
-        gsap.from(".property-card", {
-            scrollTrigger: {
-                trigger: ".gallery",
-                start: "top 80%",
-                toggleActions: 'play none none reverse'
-            },
-            duration: 1,
-            opacity: 0,
-            y: 50,
-            stagger: 0.2,
-            ease: "power3.out",
-        });
-
-
-        // --- CTA SCROLL ANIMATION ---
-        gsap.from('.cta-content > *', {
-            scrollTrigger: {
-                trigger: '.cta-section',
-                start: 'top 80%',
-                toggleActions: 'play none none reverse'
-            },
-            opacity: 0,
-            y: 50,
-            stagger: 0.2,
-            duration: 1
-        });
-
-        // --- FOOTER YEAR ---
+        gsap.from(".property-card", { scrollTrigger: { trigger: ".gallery", start: "top 80%", toggleActions: 'play none none reverse' }, duration: 1, opacity: 0, y: 50, stagger: 0.2, ease: "power3.out", });
+        gsap.from('.cta-content > *', { scrollTrigger: { trigger: '.cta-section', start: 'top 80%', toggleActions: 'play none none reverse' }, opacity: 0, y: 50, stagger: 0.2, duration: 1 });
         document.getElementById('year').textContent = new Date().getFullYear();
-
     });
     </script>
 </body>

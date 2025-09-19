@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propiedades en Estados Unidos - FM Inmobiliaria</title>
+    <meta name="description" content="Explora nuestro portafolio de propiedades en Estados Unidos.">
+    
+    <link rel="icon" href="https://fminmobiliaria.com.co/wp-content/uploads/2023/05/LOGO-FINAL-FM_Mesa-de-trabajo-1.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --gold: #C4A66A;
+            --font-main: 'Inter', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--light); color: var(--dark); }
+        .navbar { 
+            position: sticky; /* Cambiado a sticky para que no se superponga al iframe */
+            top: 0; 
+            width: 100%; 
+            padding: 1rem 3rem; 
+            z-index: 1000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(10px); 
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .logo img { height: 50px; }
+        .menu-button { font-size: 1rem; font-weight: 500; text-decoration: none; color: var(--dark); cursor: pointer; }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 200vh; /* Altura inicial del iframe */
+        }
+        
+        #NEOiframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            visibility: hidden; /* Oculto hasta que se cargue */
+        }
+
+        .loading-message {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="https://fminmobiliaria.com.co/wp-content/uploads/2023/05/LOGO-FINAL-FM_Mesa-de-trabajo-1.png" alt="Logo FM Inmobiliaria">
+        </a>
+        <a href="index.html" class="menu-button">Volver al Inicio</a>
+    </nav>
+
+    <div class="iframe-container">
+        <div class="loading-message" id="loading">Cargando propiedades de Estados Unidos...</div>
+        <iframe id='NEOiframe' style='width:100%;height:100%;border:none;'></iframe>
+    </div>
+
+    <script async src="https://assets.newestateonly.com/iframe-loader/load.js" data-neokey="67d1fe1dd009d868df93eff8" data-neolang="es"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const iframe = document.getElementById('NEOiframe');
+            const loadingMessage = document.getElementById('loading');
+            
+            iframe.addEventListener('load', () => {
+                // Oculta el mensaje de carga y muestra el iframe cuando esté listo
+                loadingMessage.style.display = 'none';
+                iframe.style.visibility = 'visible';
+            });
+        });
+    </script>
+</body>
+</html>
