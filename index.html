@@ -311,7 +311,6 @@
         }
         .property-grid {
             display: grid;
-            /* AJUSTE PARA MÓVILES: Reducido el ancho mínimo a 320px */
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
@@ -479,7 +478,8 @@
             .service-item .service-number { justify-self: center; }
             .market-item { grid-template-columns: 1fr; }
             .market-item:nth-child(even) .market-image { order: 0; }
-            /* No es necesario cambiar el grid aquí porque el ajuste de minmax funciona bien */
+            .property-grid { grid-template-columns: 1fr; }
+            .property-card { width: 100%; }
             .footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
 
@@ -556,7 +556,7 @@
                         <a href="propiedades-colombia.html" class="cta-button">Explorar</a>
                     </div>
                     <div class="market-image">
-                        <img src="https://images.pexels.com/photos/2884864/pexels-photo-2884864.jpeg?_gl=1*neyi06*_ga*NzA0MTM0NDQuMTc1ODI5NjAzMQ..*_ga_8JE65Q40S6*czE3NTgyOTYwMzEkbzEkZzEkdDE3NTgyOTYwMzgkajUzJGwwJGgw" alt="Paisaje del Valle de Cocora, Colombia">
+                        <img src="https://images.pexels.com/photos/2884864/pexels-photo-2884864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Paisaje de Colombia">
                     </div>
                 </div>
                 <div class="market-item">
@@ -596,7 +596,7 @@
         <section class="cta-section" id="contact">
             <div class="container cta-content">
                 <h2>Empecemos un nuevo capítulo.</h2>
-                <a href="mailto:contacto@fminmobiliaria.com" class="cta-link">Hablemos</a>
+                <a href="https://wa.me/573132617894?text=¡Hola!%20Quisiera%20comunicarme%20con%20FM%20Inmobiliaria." class="cta-link" target="_blank">Hablemos</a>
             </div>
         </section>
 
