@@ -479,8 +479,13 @@
             .market-item { grid-template-columns: 1fr; }
             .market-item:nth-child(even) .market-image { order: 0; }
             .property-grid { grid-template-columns: 1fr; }
-            .property-card { width: 100%; }
             .footer { flex-direction: column; gap: 1rem; text-align: center; }
+            
+            /* --- CORRECCIÓN PARA TARJETAS EN MÓVIL --- */
+            .property-details, .property-info-top, .property-info-bottom {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
         }
 
     </style>
