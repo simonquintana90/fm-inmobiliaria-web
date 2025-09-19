@@ -23,78 +23,83 @@
 
         /* === Base Styles === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-main); background-color: #fff; color: var(--dark); overflow-x: hidden; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 3rem; }
+        body { font-family: var(--font-main); background-color: var(--light); color: var(--dark); overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
         .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 3rem; z-index: 1000; display: flex; justify-content: space-between; align-items: center; background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
         .logo img { height: 50px; }
-        .menu-button { font-size: 1rem; font-weight: 500; text-decoration: none; color: var(--dark); cursor: pointer; z-index: 1001; }
-        .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--dark); z-index: 999; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; }
-        .fullscreen-menu-nav { text-align: center; }
-        .fullscreen-menu-nav ul { list-style: none; }
-        .fullscreen-menu-nav li { margin: 1rem 0; }
-        .fullscreen-menu-link { font-size: clamp(2.5rem, 6vw, 5rem); color: var(--light); text-decoration: none; font-weight: 700; }
+        .menu-button { font-size: 1rem; font-weight: 500; text-decoration: none; color: var(--dark); cursor: pointer; }
         .footer { padding: 3rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); margin-top: 5rem;}
-        .social-links { display: flex; gap: 1.5rem; }
-        .social-links a { color: var(--dark); text-decoration: none; transition: color 0.3s ease; }
-        .social-links a:hover { color: var(--gold); }
-
-        /* === Estructura de Dos Columnas === */
+        
+        /* === NUEVO DISEÑO DE PÁGINA DE PROPIEDAD === */
         .property-detail-page {
             padding-top: 120px;
             padding-bottom: 5rem;
-        }
-        .property-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 4rem;
-            align-items: flex-start;
-        }
-        .gallery-column {
-            position: sticky;
-            top: 120px;
         }
         .loading-property, .error-property {
             text-align: center; font-size: 1.5rem; color: #888; padding: 5rem;
         }
 
         /* Galería de Imágenes */
-        .swiper-container { width: 100%; border-radius: 12px; overflow: hidden; }
-        .gallery-top { height: 500px; margin-bottom: 1rem; }
-        .gallery-thumbs { height: 90px; }
+        .gallery-container {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .swiper-container { width: 100%; }
+        .gallery-top { height: 60vh; max-height: 600px; }
         .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .swiper-button-next, .swiper-button-prev { color: var(--light); }
-        .swiper-slide-thumb { opacity: 0.6; border-radius: 8px; transition: opacity 0.3s ease; cursor: pointer; overflow: hidden; }
-        .swiper-slide-thumb-active { opacity: 1; border: 3px solid var(--gold); }
+        .swiper-button-next, .swiper-button-prev { color: white; }
+        
+        .gallery-thumbs { height: 100px; margin-top: 4px;}
+        .swiper-slide-thumb { opacity: 0.7; cursor: pointer; transition: opacity 0.3s; }
+        .swiper-slide-thumb-active { opacity: 1; }
+        
+        /* Contenedor de Información */
+        .info-box {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            margin-top: -80px; /* << TRUCO para que se superponga a la imagen */
+            position: relative;
+            z-index: 10;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-        /* Columna de Información */
-        .property-header { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; }
-        .property-header h1 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
-        .property-price { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--gold); margin-top: 0.5rem; }
-        .property-meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-bottom: 2rem; }
+        .property-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+        .property-header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.2; flex-basis: 60%; }
+        .property-price { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; color: var(--gold); text-align: right; flex-basis: 35%; }
+
+        .property-meta { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; padding: 1.5rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
         .meta-item { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: #555; }
         .meta-item .iconify { font-size: 1.4rem; color: var(--dark); }
 
-        .property-section h2 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+        /* Contenido Adicional */
+        .additional-info {
+            padding-top: 3rem;
+        }
+        .property-section {
+            margin-bottom: 3rem;
+        }
+        .property-section h2 { font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;}
         .property-description { font-size: 1.1rem; line-height: 1.7; color: #444; }
-        .property-description p { margin-bottom: 1rem; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-        .feature-item { background-color: var(--light); padding: 1rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .feature-item { background-color: var(--light); padding: 1rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; font-size: 1rem; }
         .feature-item .iconify { font-size: 1.5rem; color: var(--gold); flex-shrink: 0; }
-        .feature-item strong { margin-left: 0.5rem; }
 
         .contact-owner-btn { background-color: var(--gold); color: var(--dark); padding: 1rem 2.5rem; border-radius: 5px; text-decoration: none; font-weight: 500; display: inline-block; transition: all 0.3s ease; border: none; cursor: pointer; font-size: 1.1rem; }
         .contact-owner-btn:hover { background-color: var(--dark); color: var(--light); transform: translateY(-3px); }
-
+        
         /* Responsive */
-        @media (max-width: 992px) {
-            .property-layout { grid-template-columns: 1fr; }
-            .gallery-column { position: static; top: auto; }
-            .info-column { margin-top: 3rem; }
-        }
         @media (max-width: 768px) {
-            .container { padding: 0 1.5rem; }
-            .gallery-top { height: 300px; }
-            .gallery-thumbs { display: none; }
+            .container { padding: 0 1rem; }
+            .gallery-top { height: 40vh; }
+            .info-box { width: 100%; margin-top: -50px; padding: 1.5rem; }
+            .property-header { flex-direction: column; gap: 0.5rem; }
+            .property-price { text-align: left; }
         }
     </style>
 </head>
@@ -106,33 +111,26 @@
         </a>
         <a href="#" class="menu-button">Menú</a>
     </nav>
-
-    <div class="fullscreen-menu">
-        <nav class="fullscreen-menu-nav">
-            <ul>
-                 <li><a href="propiedades-colombia.html" class="fullscreen-menu-link">Propiedades</a></li>
-                 <li><a href="index.html#markets" class="fullscreen-menu-link">Mercados</a></li>
-                 <li><a href="index.html#contact" class="fullscreen-menu-link">Contacto</a></li>
-            </ul>
-        </nav>
-    </div>
-
+    
     <main class="property-detail-page">
         <div class="container">
             <div class="loading-property">Cargando detalles de la propiedad...</div>
             <div class="error-property" style="display: none;"></div>
 
-            <div id="property-content" class="property-layout" style="display: none;">
-                <div class="gallery-column">
+            <div id="property-content" style="display: none;">
+                
+                <div class="gallery-container">
                     <div class="swiper-container gallery-top">
                         <div class="swiper-wrapper" id="property-images"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
                     </div>
                     <div class="swiper-container gallery-thumbs">
                         <div class="swiper-wrapper" id="property-thumbnails"></div>
                     </div>
                 </div>
 
-                <div class="info-column">
+                <div class="info-box">
                     <div class="property-header">
                         <h1 id="property-title"></h1>
                         <p class="property-price" id="property-price"></p>
@@ -144,6 +142,9 @@
                         <div class="meta-item"><span class="iconify" data-icon="ph:ruler-bold"></span> <span id="property-area"></span></div>
                         <div class="meta-item"><span class="iconify" data-icon="ph:car-bold"></span> <span id="property-garages"></span></div>
                     </div>
+                </div>
+                
+                <div class="additional-info">
                     <div class="property-section property-description">
                         <h2>Descripción</h2>
                         <div id="property-description-text"></div>
@@ -152,7 +153,7 @@
                         <h2>Características</h2>
                         <div class="features-grid" id="property-features-list"></div>
                     </div>
-                    <div class="property-section property-location-info">
+                     <div class="property-section property-location-info">
                         <h2>Ubicación</h2>
                          <div class="features-grid">
                             <div class="feature-item"><span class="iconify" data-icon="ph:globe"></span> <strong>País:</strong> <span id="location-country"></span></div>
@@ -160,29 +161,20 @@
                             <div class="feature-item"><span class="iconify" data-icon="ph:map-trifold"></span> <strong>Zona/Barrio:</strong> <span id="location-zone"></span></div>
                         </div>
                     </div>
-                    <div style="margin-top: 2rem; text-align: center;">
+                    <div style="text-align: center; margin-top: 2rem;">
                         <a href="mailto:info@fminmobiliaria.com" class="contact-owner-btn">Contactar al Asesor</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        <div class="copyright">&copy; <span id="year"></span> FM Inmobiliaria. Todos los derechos reservados.</div>
-        <div class="social-links">
-             <a href="https://www.instagram.com/fm_inmobiliaria/" target="_blank">Instagram</a>
-             <a href="https://www.youtube.com/channel/UCEUtg5vtxIvggYBiJ_vLt3Q" target="_blank">YouTube</a>
-             <a href="https://www.facebook.com/profile.php?id=100084233577175" target="_blank">Facebook</a>
-             <a href="https://www.linkedin.com/in/fabian-andres-moreno-oliveros-71871121/" target="_blank">LinkedIn</a>
-             <a href="https://twitter.com/famoli09" target="_blank">Twitter</a>
-             <a href="https://www.tiktok.com/@user4965767830058?lang=es" target="_blank">TikTok</a>
-        </div>
-    </footer>
+        </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -192,11 +184,9 @@
             const errorDiv = document.querySelector('.error-property');
             const propertyContent = document.getElementById('property-content');
 
-            document.getElementById('year').textContent = new Date().getFullYear();
-
             if (!propertyId) {
                 loadingDiv.style.display = 'none';
-                errorDiv.textContent = 'Error: ID de propiedad no especificado en la URL.';
+                errorDiv.textContent = 'Error: ID de propiedad no especificado.';
                 errorDiv.style.display = 'block';
                 return;
             }
@@ -208,7 +198,7 @@
                 const property = await response.json();
                 if (!property || property.status === 'error') throw new Error('Propiedad no encontrada.');
 
-                // Populate content
+                // Poblar contenido
                 document.title = `${property.title || 'Propiedad'} - FM Inmobiliaria`;
                 document.getElementById('property-title').textContent = property.title || 'Propiedad sin título';
                 document.getElementById('property-price').textContent = property.sale_price_label || property.rent_price_label || 'Consultar';
@@ -219,11 +209,12 @@
                 document.getElementById('property-garages').textContent = `${property.garages || 0} garajes`;
                 document.getElementById('property-description-text').innerHTML = property.observations || 'Descripción no disponible.';
 
+                // Poblar ubicación
                 document.getElementById('location-country').textContent = property.country_label || 'N/A';
                 document.getElementById('location-city').textContent = property.city_label || 'N/A';
                 document.getElementById('location-zone').textContent = property.zone_label || 'N/A';
 
-                // Populate image gallery
+                // Poblar galería
                 const mainImageContainer = document.getElementById('property-images');
                 const thumbnailContainer = document.getElementById('property-thumbnails');
                 const images = property.galleries && property.galleries['0'] ? Object.values(property.galleries['0']) : [];
@@ -237,7 +228,7 @@
                     mainImageContainer.innerHTML += `<div class="swiper-slide"><img src="https://placehold.co/1200x600/f5f5f5/1a1a1a?text=Sin+Imágenes" alt="Sin imágenes"></div>`;
                 }
                 
-                // Populate features
+                // Poblar características
                 const featuresContainer = document.getElementById('property-features-list');
                 const allFeatures = [...(property.features.internal || []), ...(property.features.external || [])];
                 if(allFeatures.length > 0) {
@@ -248,17 +239,17 @@
                     featuresContainer.innerHTML = "<p>No hay características adicionales especificadas.</p>";
                 }
 
-                // Initialize Swiper
+                // Inicializar Swiper
                 const galleryThumbs = new Swiper('.gallery-thumbs', { spaceBetween: 10, slidesPerView: 'auto', freeMode: true, watchSlidesProgress: true });
                 const galleryTop = new Swiper('.gallery-top', { spaceBetween: 10, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, thumbs: { swiper: galleryThumbs }, loop: images.length > 1 });
 
                 loadingDiv.style.display = 'none';
-                propertyContent.style.display = 'grid';
+                propertyContent.style.display = 'block';
 
             } catch (error) {
                 console.error('Error al cargar la propiedad:', error);
                 loadingDiv.style.display = 'none';
-                errorDiv.textContent = 'Lo sentimos, no pudimos cargar los detalles de esta propiedad. Por favor, verifica el ID o inténtalo de nuevo más tarde.';
+                errorDiv.textContent = 'Lo sentimos, no pudimos cargar los detalles. Por favor, verifica el ID o inténtalo de nuevo.';
                 errorDiv.style.display = 'block';
             }
         });
