@@ -1,7 +1,7 @@
 // Este archivo debe estar en una carpeta llamada "api" en la raíz de tu proyecto.
 // Vercel lo detectará automáticamente como una Serverless Function.
 
-module.exports = async function handler(request, response) {
+export default async function handler(request, response) {
   // Estos son tus datos. El token se lee de forma segura desde las variables de entorno de Vercel.
   const ID_COMPANY = '14863247'; // Tu ID de compañía de Wasi
   const WASI_TOKEN = process.env.WASI_TOKEN;

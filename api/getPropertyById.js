@@ -1,7 +1,7 @@
 // api/getPropertyById.js
 // VERSIÓN CORREGIDA - Usando el endpoint de BÚSQUEDA para máxima compatibilidad.
 
-module.exports = async function handler(request, response) {
+export default async function handler(request, response) {
   const ID_COMPANY = '14863247';
   const WASI_TOKEN = process.env.WASI_TOKEN;
 

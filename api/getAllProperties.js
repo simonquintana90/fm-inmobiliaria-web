@@ -1,7 +1,7 @@
 // api/getAllProperties.js
 // VERSIÓN DEFINITIVA - Usando el parámetro correcto "skip" de la documentación.
 
-module.exports = async function handler(request, response) {
+export default async function handler(request, response) {
   const ID_COMPANY = '14863247';
   const WASI_TOKEN = process.env.WASI_TOKEN;
 
