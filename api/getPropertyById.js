@@ -22,10 +22,12 @@ export default async function handler(request, response) {
   try {
     const apiResponse = await fetch(wasiApiUrl);
 
+    // CORRECCIÓN: Se verifica si la respuesta de la API fue exitosa ANTES de intentar procesarla como JSON.
+    // Esto previene el error 500 si WASI responde con un error.
     if (!apiResponse.ok) {
-      const errorData = await apiResponse.json();
-      console.error("Error from Wasi API (getPropertyById):", errorData);
-      throw new Error(errorData.message || 'Error en la API de Wasi');
+      const errorText = await apiResponse.text();
+      console.error("Error from Wasi API (getPropertyById):", apiResponse.status, apiResponse.statusText, errorText);
+      throw new Error(`La API de Wasi respondió con un error: ${apiResponse.status}`);
     }
 
     const data = await apiResponse.json();
@@ -41,7 +43,7 @@ export default async function handler(request, response) {
     response.status(200).json(property);
 
   } catch (error) {
-    console.error('Wasi API Function Error (getPropertyById):', error);
+    console.error('Wasi API Function Error (getPropertyById):', error.message);
     response.status(500).json({ error: 'No se pudo obtener la propiedad.' });
   }
 }
