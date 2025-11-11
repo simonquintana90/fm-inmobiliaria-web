@@ -1,5 +1,5 @@
 // api/getAllProperties.js
-// VERSIÓN 3.0 - Paginación "hasta el final" sin depender del conteo total y sin filtro de país.
+// VERSIÓN 4.0 - Añadido status=4 para forzar la carga de TODOS los inmuebles.
 
 export default async function handler(request, response) {
   const ID_COMPANY = '14863247';
@@ -18,8 +18,9 @@ export default async function handler(request, response) {
     let keepFetching = true;
 
     while (keepFetching) {
-      // Se elimina "&id_country=1" para traer TODAS las propiedades de la cuenta.
-      const url = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}`;
+      // AJUSTE DEFINITIVO: Se añade `&status=4` para traer TODAS las propiedades
+      // de la cuenta, sin importar su estado (Activo, Destacado, etc.).
+      const url = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}&status=4`;
       
       const apiResponse = await fetch(url);
 
