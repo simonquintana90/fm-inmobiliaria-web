@@ -43,6 +43,9 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-4">
+            <a href="https://portalpagos.davivienda.com/#/comercio/8577/FM%20REAL%20ESTATE%20SAS" target="_blank" rel="noopener noreferrer" className="border border-current px-6 py-3 rounded-full font-semibold hover:bg-brand-accent/20 transition-all duration-300 text-base">
+                Paga tu arriendo
+            </a>
             <a href="https://wa.me/573132617894?text=¡Hola!%20Quisiera%20comunicarme%20con%20FM%20Inmobiliaria." target="_blank" rel="noopener noreferrer" className="bg-brand-black text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-80 transition-all duration-300 text-base">
                 Contáctanos
             </a>
@@ -64,9 +67,14 @@ const Navbar: React.FC = () => {
                 <Link to="/" className="text-4xl text-white hover:text-brand-accent transition-colors">Inicio</Link>
                 <Link to="/properties/colombia" className="text-4xl text-white hover:text-brand-accent transition-colors">Colombia</Link>
                 <Link to="/properties/usa" className="text-4xl text-white hover:text-brand-accent transition-colors">Estados Unidos</Link>
-                <a href="https://wa.me/573132617894?text=¡Hola!%20Quisiera%20comunicarme%20con%20FM%20Inmobiliaria." target="_blank" rel="noopener noreferrer" className="mt-8 bg-brand-white text-brand-black px-8 py-4 rounded-full font-semibold text-xl">
-                    Contáctanos
-                </a>
+                <div className="mt-8 flex flex-col items-center gap-4">
+                    <a href="https://portalpagos.davivienda.com/#/comercio/8577/FM%20REAL%20ESTATE%20SAS" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-white text-white px-8 py-4 rounded-full font-semibold text-xl hover:bg-white hover:text-brand-black transition-colors w-full max-w-xs">
+                        Paga tu arriendo
+                    </a>
+                    <a href="https://wa.me/573132617894?text=¡Hola!%20Quisiera%20comunicarme%20con%20FM%20Inmobiliaria." target="_blank" rel="noopener noreferrer" className="bg-brand-white text-brand-black px-8 py-4 rounded-full font-semibold text-xl w-full max-w-xs">
+                        Contáctanos
+                    </a>
+                </div>
             </nav>
         </div>
       </div>
