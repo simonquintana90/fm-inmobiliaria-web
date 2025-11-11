@@ -29,9 +29,19 @@ const ColombiaPropertiesPage: React.FC = () => {
       try {
         setLoading(true);
         const data = await wasiService.getAllProperties();
-        // FIX: The API already returns properties for Colombia. No need to filter again here.
-        setAllProperties(data.properties);
-        setCities(['all', ...data.cities.sort()]);
+        
+        // DEFINITIVE FIX: Filter properties for Colombia on the client-side
+        // This bypasses the Wasi API bug where it returns an incomplete list for id_country=1
+        const colombiaProperties = data.properties.filter(
+          p => p.country_label && p.country_label.toLowerCase().trim() === 'colombia'
+        );
+
+        setAllProperties(colombiaProperties);
+        
+        // Derive cities from the correctly filtered list of properties
+        const colombiaCities = [...new Set(colombiaProperties.map(p => p.city_label).filter(Boolean))];
+        setCities(['all', ...colombiaCities.sort()]);
+
       } catch (err) {
         setError('No se pudieron cargar las propiedades.');
       } finally {
