@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LogoIcon } from './Icons';
@@ -21,6 +22,8 @@ const Footer: React.FC = () => {
               <ul className="space-y-3">
                 <li><Link to="/" className="text-gray-400 hover:text-brand-accent transition-colors">Inicio</Link></li>
                 <li><Link to="/properties/colombia" className="text-gray-400 hover:text-brand-accent transition-colors">Colombia</Link></li>
+                <li><Link to="/properties/panama" className="text-gray-400 hover:text-brand-accent transition-colors">Panamá</Link></li>
+                <li><Link to="/properties/dominican-republic" className="text-gray-400 hover:text-brand-accent transition-colors">Rep. Dominicana</Link></li>
                 <li><Link to="/properties/usa" className="text-gray-400 hover:text-brand-accent transition-colors">USA</Link></li>
               </ul>
             </div>

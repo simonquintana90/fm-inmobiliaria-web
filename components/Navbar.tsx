@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { LogoIcon } from './Icons';
@@ -38,7 +39,18 @@ const Navbar: React.FC = () => {
         
         <div className="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 gap-10 items-center text-lg">
           <NavLink to="/" className={({ isActive }) => `${linkStyle} ${isActive && isHomePage ? (isScrolled ? activeLinkStyle : '') : ''}`}>Inicio</NavLink>
-          <NavLink to="/properties/colombia" className={({isActive}) => `${linkStyle} ${isActive ? activeLinkStyle : ''}`}>Colombia</NavLink>
+          
+          <div className="group relative">
+            <span className={`${linkStyle} cursor-pointer`}>Propiedades</span>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                <div className="bg-brand-white rounded-lg shadow-lg p-2 min-w-[200px]">
+                    <NavLink to="/properties/colombia" className={({isActive}) => `block px-4 py-2 text-brand-black hover:bg-brand-light rounded-md ${isActive ? 'font-bold' : ''}`}>Colombia</NavLink>
+                    <NavLink to="/properties/panama" className={({isActive}) => `block px-4 py-2 text-brand-black hover:bg-brand-light rounded-md ${isActive ? 'font-bold' : ''}`}>Panamá</NavLink>
+                    <NavLink to="/properties/dominican-republic" className={({isActive}) => `block px-4 py-2 text-brand-black hover:bg-brand-light rounded-md ${isActive ? 'font-bold' : ''}`}>Rep. Dominicana</NavLink>
+                </div>
+            </div>
+          </div>
+
           <NavLink to="/properties/usa" className={({isActive}) => `${linkStyle} ${isActive ? activeLinkStyle : ''}`}>Estados Unidos</NavLink>
         </div>
 
@@ -65,7 +77,9 @@ const Navbar: React.FC = () => {
         <div className="flex flex-col items-center justify-center h-full pt-24">
             <nav className="flex flex-col text-center gap-8">
                 <Link to="/" className="text-4xl text-white hover:text-brand-accent transition-colors">Inicio</Link>
-                <Link to="/properties/colombia" className="text-4xl text-white hover:text-brand-accent transition-colors">Colombia</Link>
+                <Link to="/properties/colombia" className="text-3xl text-white hover:text-brand-accent transition-colors">Colombia</Link>
+                <Link to="/properties/panama" className="text-3xl text-white hover:text-brand-accent transition-colors">Panamá</Link>
+                <Link to="/properties/dominican-republic" className="text-3xl text-white hover:text-brand-accent transition-colors">Rep. Dominicana</Link>
                 <Link to="/properties/usa" className="text-4xl text-white hover:text-brand-accent transition-colors">Estados Unidos</Link>
                 <div className="mt-8 flex flex-col items-center gap-4">
                     <a href="https://portalpagos.davivienda.com/#/comercio/8577/FM%20REAL%20ESTATE%20SAS" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-white text-white px-8 py-4 rounded-full font-semibold text-xl hover:bg-white hover:text-brand-black transition-colors w-full max-w-xs">
