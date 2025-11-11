@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Property } from '../types';
@@ -6,6 +5,16 @@ import { wasiService } from '../services/wasiService';
 import PropertyCard from '../components/PropertyCard';
 import Spinner from '../components/Spinner';
 import { SearchIcon } from '../components/Icons';
+
+// Helper function to normalize strings for comparison (lowercase, no accents)
+const normalizeString = (str: string) => {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+};
 
 const DominicanRepublicPropertiesPage: React.FC = () => {
   const [allProperties, setAllProperties] = useState<Property[]>([]);
@@ -29,7 +38,7 @@ const DominicanRepublicPropertiesPage: React.FC = () => {
         const data = await wasiService.getAllProperties();
         
         const dominicanProperties = data.properties.filter(
-          p => p.country_label && p.country_label.toLowerCase().trim() === 'república dominicana'
+          p => normalizeString(p.country_label) === 'republica dominicana'
         );
 
         setAllProperties(dominicanProperties);

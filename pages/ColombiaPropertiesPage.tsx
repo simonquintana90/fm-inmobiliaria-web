@@ -6,18 +6,23 @@ import PropertyCard from '../components/PropertyCard';
 import Spinner from '../components/Spinner';
 import { SearchIcon } from '../components/Icons';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-}
+// Helper function to normalize strings for comparison (lowercase, no accents)
+const normalizeString = (str: string) => {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+};
 
 const ColombiaPropertiesPage: React.FC = () => {
-  const query = useQuery();
   const [allProperties, setAllProperties] = useState<Property[]>([]);
   const [cities, setCities] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const [searchTerm, setSearchTerm] = useState(query.get('search') || '');
+  const [searchTerm, setSearchTerm] = useState('');
   const [operationType, setOperationType] = useState<string>('all');
   const [selectedCity, setSelectedCity] = useState<string>('all');
   
@@ -33,7 +38,7 @@ const ColombiaPropertiesPage: React.FC = () => {
         const data = await wasiService.getAllProperties();
         
         const colombiaProperties = data.properties.filter(
-          p => p.country_label && p.country_label.toLowerCase().trim() === 'colombia'
+          p => normalizeString(p.country_label) === 'colombia'
         );
 
         setAllProperties(colombiaProperties);
