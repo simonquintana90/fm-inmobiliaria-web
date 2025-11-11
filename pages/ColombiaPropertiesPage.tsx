@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Property } from '../types';
 import { wasiService } from '../services/wasiService';
@@ -24,21 +24,20 @@ const ColombiaPropertiesPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 9;
 
+  const pageHeaderRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const data = await wasiService.getAllProperties();
         
-        // DEFINITIVE FIX: Filter properties for Colombia on the client-side
-        // This bypasses the Wasi API bug where it returns an incomplete list for id_country=1
         const colombiaProperties = data.properties.filter(
           p => p.country_label && p.country_label.toLowerCase().trim() === 'colombia'
         );
 
         setAllProperties(colombiaProperties);
         
-        // Derive cities from the correctly filtered list of properties
         const colombiaCities = [...new Set(colombiaProperties.map(p => p.city_label).filter(Boolean))];
         setCities(['all', ...colombiaCities.sort()]);
 
@@ -73,13 +72,68 @@ const ColombiaPropertiesPage: React.FC = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, operationType, selectedCity]);
+  
+  useEffect(() => {
+    if (!loading) {
+        pageHeaderRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentPage, loading]);
 
   const Pagination = () => {
     if (pageCount <= 1) return null;
+
+    const getPaginationItems = () => {
+        const delta = 1; 
+        const left = currentPage - delta;
+        const right = currentPage + delta + 1;
+        const range: (number | string)[] = [];
+        const rangeWithDots: (number | string)[] = [];
+        let l: number | undefined;
+
+        for (let i = 1; i <= pageCount; i++) {
+            if (i === 1 || i === pageCount || (i >= left && i < right)) {
+                range.push(i);
+            }
+        }
+
+        for (const i of range) {
+            if (l) {
+                if ((i as number) - l === 2) {
+                    rangeWithDots.push(l + 1);
+                } else if ((i as number) - l !== 1) {
+                    rangeWithDots.push('...');
+                }
+            }
+            rangeWithDots.push(i);
+            l = i as number;
+        }
+        return rangeWithDots;
+    };
+
+    const paginationItems = getPaginationItems();
+
     return (
       <div className="flex justify-center items-center gap-2 mt-16">
         <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="px-4 py-2 bg-white border border-brand-gray rounded-lg disabled:opacity-50 transition-colors hover:bg-brand-light">&laquo;</button>
-        <span className="px-4 py-2 text-gray-700">Página {currentPage} de {pageCount}</span>
+        {paginationItems.map((item, index) =>
+            typeof item === 'number' ? (
+                <button
+                    key={index}
+                    onClick={() => setCurrentPage(item)}
+                    className={`px-4 py-2 border border-brand-gray rounded-lg transition-colors text-center w-12 ${
+                        currentPage === item
+                            ? 'bg-brand-black text-white border-brand-black'
+                            : 'bg-white hover:bg-brand-light'
+                    }`}
+                >
+                    {item}
+                </button>
+            ) : (
+                <span key={index} className="px-4 py-2 text-gray-500">
+                    {item}
+                </span>
+            )
+        )}
         <button onClick={() => setCurrentPage(p => Math.min(pageCount, p + 1))} disabled={currentPage === pageCount} className="px-4 py-2 bg-white border border-brand-gray rounded-lg disabled:opacity-50 transition-colors hover:bg-brand-light">&raquo;</button>
       </div>
     );
@@ -88,7 +142,7 @@ const ColombiaPropertiesPage: React.FC = () => {
   return (
     <div className="bg-brand-white">
       <div className="container mx-auto px-6 pt-36 pb-24">
-        <header className="text-center mb-16">
+        <header ref={pageHeaderRef} className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-brand-black">Propiedades en Colombia</h1>
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Encuentra tu próximo hogar en uno de los países más vibrantes del mundo.</p>
         </header>

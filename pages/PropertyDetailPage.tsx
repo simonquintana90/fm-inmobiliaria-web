@@ -55,8 +55,10 @@ const PropertyDetailPage: React.FC = () => {
   if (error) return <div className="pt-32 text-center text-red-500 text-2xl font-semibold">{error}</div>;
   if (!property) return null;
 
-  const images: PropertyImage[] = property.galleries?.['0'] 
-    ? (Object.values(property.galleries['0']) as PropertyImage[]).sort((a, b) => a.position - b.position) 
+  const images: PropertyImage[] = property.galleries?.['0']
+    ? (Object.values(property.galleries['0']) as any[])
+        .filter(item => typeof item === 'object' && item !== null && item.url)
+        .sort((a, b) => a.position - b.position)
     : (property.main_image ? [{ url: property.main_image.url, url_big: property.main_image.url, position: 0 }] : []);
 
   const allFeatures = [...(property.features?.internal || []), ...(property.features?.external || [])];
