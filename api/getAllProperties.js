@@ -1,5 +1,5 @@
 // api/getAllProperties.js
-// VERSIÓN 4.0 - Añadido status=4 para forzar la carga de TODOS los inmuebles.
+// VERSIÓN 5.0 - Ajustando el límite de paginación para que coincida con el comportamiento de la API.
 
 export default async function handler(request, response) {
   const ID_COMPANY = '14863247';
@@ -10,16 +10,17 @@ export default async function handler(request, response) {
   }
 
   // Función para obtener TODAS las propiedades de la compañía, sin filtros.
-  // Utiliza paginación secuencial hasta que no haya más resultados.
   const fetchAllWasiProperties = async () => {
     let allProperties = [];
     let skip = 0;
-    const limit = 50; // El máximo permitido por la documentación de Wasi
+    // AJUSTE CLAVE: La API de Wasi, al usar `status=4`, parece tener un límite
+    // de respuesta de 10 inmuebles. Para paginar correctamente, debemos usar
+    // un `limit` de 10 en nuestras peticiones y en nuestra lógica de parada.
+    const limit = 10;
     let keepFetching = true;
 
     while (keepFetching) {
-      // AJUSTE DEFINITIVO: Se añade `&status=4` para traer TODAS las propiedades
-      // de la cuenta, sin importar su estado (Activo, Destacado, etc.).
+      // Se mantiene `&status=4` y se ajusta `limit=10`.
       const url = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}&status=4`;
       
       const apiResponse = await fetch(url);
@@ -41,8 +42,8 @@ export default async function handler(request, response) {
         allProperties.push(...pageProperties);
       }
       
-      // Condición de parada: si la API devuelve menos propiedades que el límite,
-      // asumimos que hemos llegado a la última página.
+      // Condición de parada: Si la API devuelve MENOS de 10 propiedades,
+      // significa que es la última página. Si devuelve exactamente 10, continuamos.
       if (pageProperties.length < limit) {
         keepFetching = false;
       } else {
