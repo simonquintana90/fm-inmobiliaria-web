@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LogoIcon } from './Icons';
@@ -41,7 +40,13 @@ const Footer: React.FC = () => {
 
         </div>
         <div className="mt-24 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} FM Inversiones Inmobiliarias. Todos los derechos reservados.
+          <p>&copy; {new Date().getFullYear()} FM Inversiones Inmobiliarias. Todos los derechos reservados.</p>
+          <p className="mt-4">
+            Crafted by{' '}
+            <a href="https://www.cosmicaweb.com/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors duration-300">
+              cósmica
+            </a>
+          </p>
         </div>
       </div>
     </footer>
