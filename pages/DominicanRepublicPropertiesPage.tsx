@@ -37,9 +37,10 @@ const DominicanRepublicPropertiesPage: React.FC = () => {
         setLoading(true);
         const data = await wasiService.getAllProperties();
         
-        const dominicanProperties = data.properties.filter(
-          p => normalizeString(p.country_label) === 'republica dominicana'
-        );
+        const dominicanProperties = data.properties.filter(p => {
+          const normalizedCountry = normalizeString(p.country_label);
+          return normalizedCountry === 'republica dominicana' || normalizedCountry === 'dominican republic';
+        });
 
         setAllProperties(dominicanProperties);
         
