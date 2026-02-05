@@ -4,7 +4,7 @@ import { Property, AllPropertiesResponse } from '../types';
 const API_BASE = '/api';
 
 const CACHE_KEY_FEATURED = 'wasi_featured_properties';
-const CACHE_KEY_ALL = 'wasi_all_properties';
+const CACHE_KEY_ALL = 'wasi_all_properties_v2';
 const CACHE_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
 interface CacheEntry<T> {
