@@ -19,7 +19,8 @@ export default async function handler(request, response) {
     // AJUSTE CLAVE: La API de Wasi, al usar `status=4`, parece tener un límite
     // de respuesta de 10 inmuebles. Para paginar correctamente, debemos usar
     // un `limit` de 10 en nuestras peticiones y en nuestra lógica de parada.
-    const limit = 10;
+    // Aumentamos el límite para reducir el número de peticiones secuenciales.
+    const limit = 100;
     let keepFetching = true;
 
     while (keepFetching) {
