@@ -5,6 +5,8 @@ import { wasiService } from '../services/wasiService';
 import PropertyCard from '../components/PropertyCard';
 import Spinner from '../components/Spinner';
 import { SearchIcon } from '../components/Icons';
+import Dropdown from '../components/Dropdown';
+import SkeletonCard from '../components/SkeletonCard';
 
 // Helper function to normalize strings for comparison (lowercase, no accents)
 const normalizeString = (str: string) => {
@@ -203,68 +205,105 @@ const ColombiaPropertiesPage: React.FC = () => {
           <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Encuentra tu próximo hogar en uno de los países más vibrantes del mundo.</p>
         </header>
 
-        {/* Filters */}
-        <div className="bg-brand-light p-6 rounded-2xl border border-brand-gray mb-12">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
-            <div className="lg:col-span-1">
-              <label className="font-semibold text-gray-700 block mb-2">Buscar</label>
-              <div className="relative">
-                <input type="text" placeholder="Palabra clave..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full form-input h-12 pl-10 rounded-lg border-gray-300 focus:ring-brand-accent focus:border-brand-accent" />
-                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              </div>
+        {/* Filters - Glassmorphic / Pill Style */}
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-2 mb-12 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
+          {/* Keyword Search */}
+          <div className="flex-1 relative p-1">
+            <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400">
+              <SearchIcon className="w-5 h-5" />
             </div>
-            <div>
-              <label className="font-semibold text-gray-700 block mb-2">Operación</label>
-              <select value={operationType} onChange={e => setOperationType(e.target.value)} className="w-full form-select h-12 rounded-lg border-gray-300 focus:ring-brand-accent focus:border-brand-accent">
-                <option value="all">Cualquiera</option><option value="true">Venta</option><option value="false">Arriendo</option>
-              </select>
-            </div>
-            <div>
-              <label className="font-semibold text-gray-700 block mb-2">Ciudad</label>
-              <select value={selectedCity} onChange={e => setSelectedCity(e.target.value)} className="w-full form-select h-12 rounded-lg border-gray-300 focus:ring-brand-accent focus:border-brand-accent">
-                {cities.map(city => <option key={city} value={city}>{city === 'all' ? 'Todas las ciudades' : city}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="font-semibold text-gray-700 block mb-2">Tipo de Inmueble</label>
-              <select value={selectedType} onChange={e => setSelectedType(e.target.value)} className="w-full form-select h-12 rounded-lg border-gray-300 focus:ring-brand-accent focus:border-brand-accent">
-                {propertyTypes.map(type => <option key={type} value={type}>{type === 'all' ? 'Todos los tipos' : type}</option>)}
-              </select>
-            </div>
+            <input
+              type="text"
+              placeholder="Buscar por palabra clave..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-full min-h-[60px] pl-14 bg-transparent border-none focus:ring-0 text-brand-black font-medium placeholder-gray-400"
+            />
           </div>
-          {/* Advanced Second Row */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-end mt-4">
-            <div>
-              <label className="font-semibold text-gray-700 block mb-2">Presupuesto</label>
-              <select value={selectedPriceRange} onChange={e => setSelectedPriceRange(e.target.value)} className="w-full form-select h-12 rounded-lg border-gray-300 focus:ring-brand-accent focus:border-brand-accent">
-                <option value="all">Cualquier precio</option>
-                {priceRanges.map(range => <option key={range} value={range}>{range}</option>)}
-              </select>
-            </div>
+
+          {/* Operation */}
+          <div className="flex-1">
+            <Dropdown
+              label="Operación"
+              options={['Venta', 'Arriendo']}
+              selected={operationType === 'true' ? 'Venta' : operationType === 'false' ? 'Arriendo' : 'all'}
+              onSelect={(val) => setOperationType(val === 'Venta' ? 'true' : val === 'Arriendo' ? 'false' : 'all')}
+              variant="light"
+              placeholder="Cualquiera"
+              showDivider={false} // Managed by parent flex/divide
+            />
+          </div>
+
+          {/* City */}
+          <div className="flex-1">
+            <Dropdown
+              label="Ciudad"
+              options={cities.filter(c => c !== 'all')}
+              selected={selectedCity}
+              onSelect={setSelectedCity}
+              variant="light"
+              placeholder="Todas"
+              showDivider={false}
+            />
+          </div>
+
+          {/* Type */}
+          <div className="flex-1">
+            <Dropdown
+              label="Tipo"
+              options={propertyTypes.filter(t => t !== 'all')}
+              selected={selectedType}
+              onSelect={setSelectedType}
+              variant="light"
+              placeholder="Todos"
+              showDivider={false}
+            />
+          </div>
+
+          {/* Price */}
+          <div className="flex-1">
+            <Dropdown
+              label="Presupuesto"
+              options={priceRanges}
+              selected={selectedPriceRange}
+              onSelect={setSelectedPriceRange}
+              variant="light"
+              placeholder="Cualquiera"
+              showDivider={false}
+            />
           </div>
         </div>
 
         <main>
-          <div className="mb-8">
+          <div className="mb-8 flex justify-between items-end">
             <p className="text-gray-600 font-semibold">{filteredProperties.length} propiedades encontradas</p>
           </div>
-          {loading && <Spinner />}
+
           {error && <p className="text-red-500">{error}</p>}
-          {!loading && !error && (
-            paginatedProperties.length > 0 ? (
-              <>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-                  {paginatedProperties.map(prop => (
-                    <PropertyCard key={prop.id_property} property={prop} />
-                  ))}
+
+          {loading ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
+          ) : (
+            !error && (
+              paginatedProperties.length > 0 ? (
+                <>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                    {paginatedProperties.map(prop => (
+                      <PropertyCard key={prop.id_property} property={prop} />
+                    ))}
+                  </div>
+                  <Pagination />
+                </>
+              ) : (
+                <div className="text-center py-20 my-8 bg-brand-light rounded-2xl border border-brand-gray">
+                  <h3 className="text-3xl font-bold text-brand-black">Sin resultados</h3>
+                  <p className="text-gray-500 mt-4 max-w-md mx-auto">No se encontraron propiedades que coincidan con tus criterios. Prueba a ajustar los filtros.</p>
                 </div>
-                <Pagination />
-              </>
-            ) : (
-              <div className="text-center py-20 my-8 bg-brand-light rounded-2xl border border-brand-gray">
-                <h3 className="text-3xl font-bold text-brand-black">Sin resultados</h3>
-                <p className="text-gray-500 mt-4 max-w-md mx-auto">No se encontraron propiedades que coincidan con tus criterios. Prueba a ajustar los filtros.</p>
-              </div>
+              )
             )
           )}
         </main>
