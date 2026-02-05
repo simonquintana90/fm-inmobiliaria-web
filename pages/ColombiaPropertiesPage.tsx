@@ -107,7 +107,7 @@ const ColombiaPropertiesPage: React.FC = () => {
 
       const cityMatch = selectedCity === 'all' || normalizeString(prop.city_label) === normalizeString(selectedCity);
 
-      const typeMatch = selectedType === 'all' || (prop.property_type?.name && normalizeString(prop.property_type.name) === normalizeString(selectedType));
+      const typeMatch = selectedType === 'all' || (prop.property_type?.name && normalizeString(prop.property_type.name).includes(normalizeString(selectedType)));
 
       // Get correct price label based on operation
       const priceLabel = prop.for_sale === 'true' ? prop.sale_price_label : prop.rent_price_label;
@@ -176,8 +176,8 @@ const ColombiaPropertiesPage: React.FC = () => {
               key={index}
               onClick={() => setCurrentPage(item)}
               className={`px-4 py-2 border border-brand-gray rounded-lg transition-colors text-center w-12 ${currentPage === item
-                  ? 'bg-brand-black text-white border-brand-black'
-                  : 'bg-white hover:bg-brand-light'
+                ? 'bg-brand-black text-white border-brand-black'
+                : 'bg-white hover:bg-brand-light'
                 }`}
             >
               {item}
