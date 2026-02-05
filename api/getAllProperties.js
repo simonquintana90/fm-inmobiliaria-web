@@ -71,14 +71,20 @@ export default async function handler(request, response) {
       console.error("Error fetching property types:", typesRes.status, errorText);
       // No lanzamos un error fatal, podemos continuar sin los nombres de tipo si falla.
     }
-    const typesData = typesRes.ok ? await typesRes.json() : { property_types: [] };
+    const typesData = typesRes.ok ? await typesRes.json() : {};
+
+    // Wasi API returns objects with numeric keys, not arrays.
+    const propertyTypes = Object.keys(typesData)
+      .filter(key => !isNaN(parseInt(key))) // Filter only numeric keys
+      .map(key => typesData[key]); // Extract the object
 
     const cities = [...new Set(uniqueProperties.map(p => p.city_label).filter(Boolean))];
-    const propertyTypes = typesData.property_types || [];
 
     // Unimos la información para una respuesta completa
     const propertiesWithTypes = uniqueProperties.map(prop => {
-      const propType = propertyTypes.find(t => t.id_property_type === prop.id_property_type);
+      // Wasi properties usually come with id_property_type. 
+      // Sometimes checking type id string vs number is needed.
+      const propType = propertyTypes.find(t => String(t.id_property_type) === String(prop.id_property_type));
       return {
         ...prop,
         property_type: { name: propType ? propType.name : 'No especificado' }
