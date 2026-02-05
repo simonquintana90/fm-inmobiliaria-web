@@ -6,7 +6,7 @@ interface IconProps {
 }
 
 export const LogoIcon: React.FC<IconProps> = ({ className }) => (
-    <img src="https://cdn.prod.website-files.com/68026a0651df0f492c75ff17/691234088244dd37dbf626eb_FM%20Inm%20Logo.png" alt="FM Inversiones Inmobiliarias Logo" className={className} />
+  <img src="https://cdn.prod.website-files.com/68026a0651df0f492c75ff17/691234088244dd37dbf626eb_FM%20Inm%20Logo.png" alt="FM Inversiones Inmobiliarias Logo" className={className} />
 );
 
 export const BedIcon: React.FC<IconProps> = ({ className = "w-5 h-5" }) => (
@@ -51,4 +51,16 @@ export const KeyIcon: React.FC<IconProps> = ({ className = "w-8 h-8" }) => (
 
 export const ChartBarIcon: React.FC<IconProps> = ({ className = "w-8 h-8" }) => (
   <Icon icon="solar:chart-2-line-duotone" className={className} />
+);
+
+export const HomeIcon: React.FC<IconProps> = ({ className = "w-5 h-5" }) => (
+  <Icon icon="solar:home-2-line-duotone" className={className} />
+);
+
+export const DollarIcon: React.FC<IconProps> = ({ className = "w-5 h-5" }) => (
+  <Icon icon="solar:dollar-minimalistic-line-duotone" className={className} />
+);
+
+export const ChevronDownIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
+  <Icon icon="solar:alt-arrow-down-line-duotone" className={className} />
 );

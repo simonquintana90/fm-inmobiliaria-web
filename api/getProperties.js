@@ -12,6 +12,9 @@ export default async function handler(request, response) {
     return response.status(500).json({ error: 'La configuración del servidor es incorrecta. Falta el token de API.' });
   }
 
+  // Set Cache-Control header for 10 minutes (600 seconds)
+  response.setHeader('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=300');
+
   // Pedimos 6 propiedades a Wasi.
   const wasiApiUrl = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=6`;
 
@@ -21,9 +24,9 @@ export default async function handler(request, response) {
     // CORRECCIÓN: Se verifica si la respuesta de la API fue exitosa ANTES de intentar procesarla como JSON.
     // Esto previene el error 500 si WASI responde con un error (ej. HTML o texto simple).
     if (!apiResponse.ok) {
-        const errorText = await apiResponse.text(); // Leemos el error como texto para un debug seguro.
-        console.error("Error from Wasi API:", apiResponse.status, apiResponse.statusText, errorText);
-        throw new Error(`La API de Wasi respondió con un error: ${apiResponse.status}`);
+      const errorText = await apiResponse.text(); // Leemos el error como texto para un debug seguro.
+      console.error("Error from Wasi API:", apiResponse.status, apiResponse.statusText, errorText);
+      throw new Error(`La API de Wasi respondió con un error: ${apiResponse.status}`);
     }
 
     const data = await apiResponse.json();
@@ -36,10 +39,10 @@ export default async function handler(request, response) {
         .filter(key => !isNaN(parseInt(key))) // Nos aseguramos de tomar solo las llaves numéricas
         .map(key => data[key]);
     }
-    
+
     // AJUSTE DEFINITIVO: Nos aseguramos de devolver solo 6 propiedades, sin importar lo que envíe Wasi.
     const limitedProperties = properties.slice(0, 6);
-    
+
     response.status(200).json(limitedProperties);
 
   } catch (error) {
