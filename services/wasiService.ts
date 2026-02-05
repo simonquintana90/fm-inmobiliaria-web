@@ -61,8 +61,8 @@ export const wasiService = {
 
   getAllProperties: async (): Promise<AllPropertiesResponse> => {
     // Check cache first
-    const CACHE_KEY_ALL_V3 = 'wasi_all_properties_v3';
-    const cached = getFromCache<AllPropertiesResponse>(CACHE_KEY_ALL_V3);
+    const CACHE_KEY_ALL_V4 = 'wasi_all_properties_v4';
+    const cached = getFromCache<AllPropertiesResponse>(CACHE_KEY_ALL_V4);
     if (cached) return cached;
 
     const ID_COMPANY = '14863247';
@@ -77,8 +77,8 @@ export const wasiService = {
     let allProperties: any[] = [];
     const limit = 20;
 
-    // 1. Fetch first page
-    const firstUrl = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=0&status=4`;
+    // 1. Fetch first page (USING PROXY)
+    const firstUrl = `/wasi-api/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=0&status=4`;
     const firstRes = await fetch(firstUrl);
     if (!firstRes.ok) throw new Error('Failed to fetch Wasi properties');
     const firstData = await firstRes.json();
@@ -91,11 +91,11 @@ export const wasiService = {
 
     const total = firstData.total || 0;
 
-    // 2. Fetch remaining in parallel
+    // 2. Fetch remaining in parallel (USING PROXY)
     if (total > limit) {
       const promises = [];
       for (let skip = limit; skip < total; skip += limit) {
-        const url = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}&status=4`;
+        const url = `/wasi-api/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}&status=4`;
         promises.push(
           fetch(url).then(async res => {
             if (!res.ok) return [];
@@ -108,8 +108,8 @@ export const wasiService = {
       results.forEach(p => allProperties.push(...p));
     }
 
-    // 3. Fetch Types
-    const typesUrl = `https://api.wasi.co/v1/property-type/all?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}`;
+    // 3. Fetch Types (USING PROXY)
+    const typesUrl = `/wasi-api/property-type/all?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}`;
     const typesRes = await fetch(typesUrl);
     const typesData = typesRes.ok ? await typesRes.json() : {};
     const propertyTypesRaw = Object.keys(typesData).filter(k => !isNaN(parseInt(k))).map(k => typesData[k]);
@@ -134,7 +134,7 @@ export const wasiService = {
     };
 
     // Save to cache
-    saveToCache(CACHE_KEY_ALL_V3, result);
+    saveToCache(CACHE_KEY_ALL_V4, result);
     return result;
   },
 
