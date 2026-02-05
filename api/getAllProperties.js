@@ -15,49 +15,43 @@ export default async function handler(request, response) {
   // Función para obtener TODAS las propiedades de la compañía, sin filtros.
   const fetchAllWasiProperties = async () => {
     let allProperties = [];
-    const limit = 10; // Wasiforces limit=10 with status=4
+    let skip = 0;
+    // AJUSTE CLAVE: La API de Wasi, al usar `status=4`, parece tener un límite
+    // de respuesta de 10 inmuebles. Para paginar correctamente, debemos usar
+    // un `limit` de 10 en nuestras peticiones y en nuestra lógica de parada.
+    const limit = 10;
+    let keepFetching = true;
 
-    // 1. Fetch first page to get 'total' and first batch
-    const firstUrl = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=0&status=4`;
+    while (keepFetching) {
+      // Se mantiene `&status=4` y se ajusta `limit=10`.
+      const url = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}&status=4`;
 
-    try {
-      const firstRes = await fetch(firstUrl);
-      if (!firstRes.ok) throw new Error('Failed to fetch first page');
+      const apiResponse = await fetch(url);
 
-      const firstData = await firstRes.json();
-      const total = firstData.total || 0;
-
-      // Extract properties from first page
-      const firstPageProps = Object.keys(firstData)
-        .filter(key => !isNaN(parseInt(key)))
-        .map(key => firstData[key]);
-
-      allProperties.push(...firstPageProps);
-
-      // 2. Calculate remaining fetches
-      if (total > limit) {
-        const promises = [];
-        // Start from skip=10 (limit), up to total
-        for (let skip = limit; skip < total; skip += limit) {
-          const url = `https://api.wasi.co/v1/property/search?id_company=${ID_COMPANY}&wasi_token=${WASI_TOKEN}&limit=${limit}&skip=${skip}&status=4`;
-          promises.push(
-            fetch(url).then(async (res) => {
-              if (!res.ok) return [];
-              const data = await res.json();
-              return Object.keys(data)
-                .filter(key => !isNaN(parseInt(key)))
-                .map(key => data[key]);
-            })
-          );
-        }
-
-        // 3. Execute all remaining fetches in parallel
-        const results = await Promise.all(promises);
-        results.forEach(props => allProperties.push(...props));
+      if (!apiResponse.ok) {
+        const errorText = await apiResponse.text();
+        console.error(`Error fetching page with skip=${skip}:`, apiResponse.status, errorText);
+        // Detenemos el proceso si hay un error para evitar bucles infinitos.
+        break;
       }
 
-    } catch (err) {
-      console.error('Error fetching Wasi properties:', err);
+      const pageData = await apiResponse.json();
+
+      const pageProperties = Object.keys(pageData)
+        .filter(key => !isNaN(parseInt(key)))
+        .map(key => pageData[key]);
+
+      if (pageProperties.length > 0) {
+        allProperties.push(...pageProperties);
+      }
+
+      // Condición de parada: Si la API devuelve MENOS de 10 propiedades,
+      // significa que es la última página. Si devuelve exactamente 10, continuamos.
+      if (pageProperties.length < limit) {
+        keepFetching = false;
+      } else {
+        skip += limit;
+      }
     }
 
     return allProperties;
