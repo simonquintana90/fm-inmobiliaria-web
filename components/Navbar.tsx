@@ -55,6 +55,9 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="hidden lg:flex items-center gap-4">
+            <a href="https://www.fmrealcapital.com.co" target="_blank" rel="noopener noreferrer" className="border border-current px-6 py-3 rounded-full font-semibold hover:bg-brand-accent/20 transition-all duration-300 text-base whitespace-nowrap">
+                Invierte en Bienes Raíces
+            </a>
             <a href="https://portalpagos.davivienda.com/#/comercio/8577/FM%20REAL%20ESTATE%20SAS" target="_blank" rel="noopener noreferrer" className="border border-current px-6 py-3 rounded-full font-semibold hover:bg-brand-accent/20 transition-all duration-300 text-base">
                 Paga tu arriendo
             </a>
@@ -82,6 +85,9 @@ const Navbar: React.FC = () => {
                 <Link to="/properties/dominican-republic" className="text-3xl text-white hover:text-brand-accent transition-colors">Rep. Dominicana</Link>
                 <Link to="/properties/usa" className="text-4xl text-white hover:text-brand-accent transition-colors">Estados Unidos</Link>
                 <div className="mt-8 flex flex-col items-center gap-4">
+                    <a href="https://www.fmrealcapital.com.co" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-white text-white px-8 py-4 rounded-full font-semibold text-xl hover:bg-white hover:text-brand-black transition-colors w-full max-w-xs">
+                        Invierte en Bienes Raíces
+                    </a>
                     <a href="https://portalpagos.davivienda.com/#/comercio/8577/FM%20REAL%20ESTATE%20SAS" target="_blank" rel="noopener noreferrer" className="bg-transparent border border-white text-white px-8 py-4 rounded-full font-semibold text-xl hover:bg-white hover:text-brand-black transition-colors w-full max-w-xs">
                         Paga tu arriendo
                     </a>

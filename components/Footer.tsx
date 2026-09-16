@@ -24,6 +24,7 @@ const Footer: React.FC = () => {
                 <li><Link to="/properties/panama" className="text-gray-400 hover:text-brand-accent transition-colors">Panamá</Link></li>
                 <li><Link to="/properties/dominican-republic" className="text-gray-400 hover:text-brand-accent transition-colors">Rep. Dominicana</Link></li>
                 <li><Link to="/properties/usa" className="text-gray-400 hover:text-brand-accent transition-colors">USA</Link></li>
+                <li><a href="https://www.fmrealcapital.com.co" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-accent transition-colors">Invierte en Bienes Raíces</a></li>
               </ul>
             </div>
             
